@@ -1,74 +1,22 @@
-[
-  {
-    "question": "How can I apply for a job at NextGen Systems?",
-    "answer": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking “Apply Now”. Once you submit your CV and details, our recruitment team will review your application and contact you if you are shortlisted."
-  },
-  {
-    "question": "Can I apply for more than one position at the same time?",
-    "answer": "Absolutely! If you feel you’re suitable for multiple roles, you’re welcome to apply for more than one. Just make sure each application matches your skills and experience."
-  },
-  {
-    "question": "What documents do I need to submit with my application?",
-    "answer": "You will need to upload your updated CV. We also encourage you to include a cover letter and links to your portfolio, LinkedIn profile (if available), especially for technical roles."
-  },
-  {
-    "question": "How will I know if my application was received?",
-    "answer": "Once your application is successfully submitted, you will receive an email confirmation. You may also receive a message from RecruIT acknowledging your submission."
-  },
-  {
-    "question": "Can I apply if I don’t have previous IT industry experience?",
-    "answer": "Yes! We welcome applications from fresh graduates and candidates from different industries. If you have passion, willingness to learn, and basic relevant skills, we encourage you to apply. Some roles are specifically designed for entry-level applicants."
-  },
-  {
-    "question": "Do I need a degree to apply for a position?",
-    "answer": "A degree is beneficial, but not mandatory for all roles. We value skills, practical experience, problem-solving ability, and creativity. If you don’t have a degree but have strong project experience, certifications, or a solid portfolio, we’d still love to hear from you."
-  },
-  {
-    "question": "What are the basic qualifications needed to apply for a position in your company?",
-    "answer": "To apply for any position, you should have at least the educational background and experience represented in the job advertisement. For starter roles, a diploma or degree in the relevant field is common. Some technical roles may require specific qualifications or training."
-  },
-  {
-    "question": "Are there any age or experience limits for applying to jobs?",
-    "answer": "No, there isn’t an exact age requirement. Some positions do require a specific amount of experience. Senior roles usually require 3–5 years of experience, while internships and junior positions are open to new graduates."
-  },
-  {
-    "question": "How can I know if I meet the qualifications for a particular job?",
-    "answer": "Each job posting includes a detailed list of required qualifications, skills and experience. Compare your background to the job description — if you meet most of the listed requirements, you’re likely a good fit."
-  },
-  {
-    "question": "Are professional qualifications required?",
-    "answer": "Not always. Certifications like CIMA, ACCA, PMP and HRM Diplomas are advantages but are only required when specified in the job description."
-  },
-  {
-    "question": "Does the company provide training programs if I don’t meet all requirements?",
-    "answer": "Yes! Our Learning and Development team offers training programs to help employees acquire skills and bridge gaps for current and future roles."
-  },
-  {
-    "question": "What is the current status of my job application?",
-    "answer": "You can check your application status by logging into your candidate profile on our careers portal. Once logged in, select “My Applications” to view whether your application is under review, shortlisted, or completed."
-  },
-  {
-    "question": "How long does it take to receive feedback after an interview?",
-    "answer": "Typically, our recruitment team provides feedback within 7 to 10 working days after your interview. Timelines may vary depending on the position and number of applicants."
-  },
-  {
-    "question": "Will I be notified if I am not selected?",
-    "answer": "Yes. If you are not selected, you will receive an email notification with feedback or a general update once the recruitment process for that role is completed."
-  },
-  {
-    "question": "Can I request detailed feedback on my interview performance?",
-    "answer": "Yes. You may request feedback by replying to your interview confirmation email or contacting the HR Recruitment Team through the careers portal. Feedback is provided where possible."
-  },
-  {
-    "question": "My application has been 'Under Review' for a long time. What does that mean?",
-    "answer": "'Under Review' means your application is being evaluated by the recruitment team or hiring manager. Reviews can take longer due to high application volumes or internal discussions."
-  },
-  {
-    "question": "Can I update my resume or details after submitting the application?",
-    "answer": "Yes — you can update your details by logging into your profile before the job posting closes. After the deadline, edits can no longer be made, but you may submit a new application for the same or future roles."
-  },
-  {
-    "question": "If I'm not selected for this role, can I apply again?",
-    "answer": "Absolutely! We encourage you to apply for other roles that match your skills and experience. You can also join our talent pool to be considered for future openings."
+{
+  "faqs": {
+    "how can i apply for a job": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking 'Apply Now'. Once you submit your CV and details, our recruitment team will review your application and contact you if shortlisted.",
+    "can i apply for more than one position": "Absolutely! If you feel you’re suitable for multiple roles, you’re welcome to apply for more than one. Just make sure each application matches your skills and experience.",
+    "what documents do i need": "You will need to upload your updated CV. We also encourage including a cover letter and links to your portfolio or LinkedIn profile, especially for technical roles.",
+    "how will i know if my application was received": "Once your application is successfully submitted, you’ll receive an email confirmation and possibly a message from RecruIT acknowledging your submission.",
+    "can i apply without it experience": "Yes! We welcome fresh graduates and candidates from other industries. If you have passion, willingness to learn, and basic skills, apply!",
+    "do i need a degree": "A degree is helpful but not required for all roles. We value skills, practical experience, and creativity too!",
+    "what are the basic qualifications": "For most roles, a diploma or degree in the relevant field is required. Some positions may need specific certifications or training.",
+    "are there age or experience limits": "No, there isn’t an exact age limit. Some senior roles may require 3–5 years of experience, while entry-level positions are open to new graduates.",
+    "how can i know if i qualify": "Each job posting includes required qualifications. Compare your background with the listing — if you match most points, go ahead and apply.",
+    "are professional qualifications required": "Not always! Certifications like CIMA, ACCA, PMP, or HRM Diplomas are advantages but not mandatory unless mentioned.",
+    "does the company provide training": "Yes! NextGen offers training programs through our Learning and Development team to help employees grow their skills.",
+    "what is the current status of my job application": "You can check your application status by logging into your candidate profile on our Careers Portal under 'My Applications'.",
+    "how long does it take to receive feedback": "Typically, our recruitment team provides feedback within 7 to 10 working days after your interview.",
+    "will i be notified if i am not selected": "Yes, every candidate is informed of the outcome via email once the recruitment process for that role is completed.",
+    "can i request detailed feedback": "Yes! You can request feedback by replying to your interview email or contacting HR through the careers portal.",
+    "my application is under review": "‘Under Review’ means your application is being evaluated. This can take longer if there are many applicants.",
+    "can i update my resume": "Yes, you can update your details before the job posting closes. Afterward, you can reapply with updated information.",
+    "can i apply again": "Of course! We encourage reapplication for roles that fit your skills or future openings through our talent pool."
   }
-]
+}
