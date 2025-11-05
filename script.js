@@ -1,101 +1,69 @@
 let faqs = [];
 
-// Load chat history
-const chatBox = document.getElementById("chat-box");
-const input = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
-
-loadChatHistory();
-
-// Load FAQs
-fetch("faqs.json")
-  .then(res => res.json())
-  .then(data => {
-    faqs = data;
-    console.log("✅ FAQs loaded successfully.");
-    if (chatBox.children.length === 0)
-      showMessage("bot", "👋 Hello! I’m RecruIT, your virtual assistant. How can I help you today?");
-  })
-  .catch(() => {
-    showMessage("bot", "Hello! I'm RecruIT 😊 — I couldn’t load FAQs right now, but I can still chat!");
-  });
-
-// Event listeners
-sendBtn.addEventListener("click", sendMessage);
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendMessage();
-});
-
-function sendMessage() {
-  const userText = input.value.trim();
-  if (!userText) return;
-  showMessage("user", userText);
-  input.value = "";
-
-  showTypingIndicator();
-
-  setTimeout(() => {
-    hideTypingIndicator();
-    handleBotResponse(userText);
-  }, 800);
+async function loadFAQs() {
+  try {
+    const res = await fetch("faqs.json");
+    const data = await res.json();
+    faqs = data.faqs.flatMap(c => c.questions);
+  } catch (error) {
+    console.error("Error loading FAQs:", error);
+    appendMessage("⚠️ Sorry, I couldn’t load the FAQs. Please refresh or check your connection.", "bot");
+  }
 }
 
-function showMessage(sender, text) {
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (!message) return;
+
+  appendMessage(message, "user");
+  input.value = "";
+
+  setTimeout(() => {
+    const answer = getAnswer(message);
+    appendMessage(answer, "bot");
+  }, 500);
+}
+
+function appendMessage(text, sender) {
+  const chatBox = document.getElementById("chatBox");
   const msg = document.createElement("div");
-  msg.classList.add(sender === "user" ? "user-message" : "bot-message");
+  msg.classList.add("message", sender);
   msg.textContent = text;
   chatBox.appendChild(msg);
   chatBox.scrollTop = chatBox.scrollHeight;
-  saveChatHistory();
 }
 
-function showTypingIndicator() {
-  const typing = document.createElement("div");
-  typing.classList.add("bot-message", "typing");
-  typing.textContent = "RecruIT is typing...";
-  typing.id = "typing";
-  chatBox.appendChild(typing);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+// ✅ Improved logic – avoids repeating wrong answers
+function getAnswer(userQuestion) {
+  userQuestion = userQuestion.toLowerCase();
 
-function hideTypingIndicator() {
-  const typing = document.getElementById("typing");
-  if (typing) typing.remove();
-}
+  let bestMatch = null;
+  let highestScore = 0;
 
-function handleBotResponse(userText) {
-  userText = userText.toLowerCase();
-
-  // Greetings
-  const greetings = ["hi", "hello", "hey", "good morning", "good afternoon", "good evening"];
-  if (greetings.some(g => userText.includes(g))) {
-    showMessage("bot", "Hello there! 👋 How can I assist you with NextGen Systems’ careers today?");
-    return;
-  }
-
-  // Keyword-based matching
-  const found = faqs.find(f => {
-    const q = f.question.toLowerCase();
-    return q.split(" ").some(word => userText.includes(word));
+  faqs.forEach(faq => {
+    const question = faq.question.toLowerCase();
+    let score = similarityScore(userQuestion, question);
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatch = faq;
+    }
   });
 
-  if (found) {
-    showMessage("bot", found.answer);
-  } else {
-    showMessage("bot", "Sorry, I’m not sure about that. Please visit our Careers Page for more details.");
+  if (highestScore > 0.4 && bestMatch) {
+    return bestMatch.answer;
   }
+
+  return "🤔 I’m not sure I understand that. Could you rephrase or ask something else about our careers?";
 }
 
-// Save chat history to localStorage
-function saveChatHistory() {
-  localStorage.setItem("chatHistory", chatBox.innerHTML);
+// ✅ Basic similarity calculation
+function similarityScore(a, b) {
+  const wordsA = a.split(" ");
+  const wordsB = b.split(" ");
+  const matches = wordsA.filter(word => wordsB.includes(word));
+  return matches.length / Math.max(wordsA.length, wordsB.length);
 }
 
-// Load chat history
-function loadChatHistory() {
-  const saved = localStorage.getItem("chatHistory");
-  if (saved) {
-    chatBox.innerHTML = saved;
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-}
+// ✅ Load FAQs when chatbot starts
+loadFAQs();
