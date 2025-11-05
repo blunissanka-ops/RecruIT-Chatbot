@@ -1,16 +1,19 @@
 let faqs = [];
 
+// Load FAQs from faqs.json
 async function loadFAQs() {
   try {
     const res = await fetch("faqs.json");
     const data = await res.json();
     faqs = data.faqs.flatMap(c => c.questions);
+    console.log("✅ FAQs loaded successfully:", faqs.length);
   } catch (error) {
-    console.error("Error loading FAQs:", error);
+    console.error("❌ Error loading FAQs:", error);
     appendMessage("⚠️ Sorry, I couldn’t load the FAQs. Please refresh or check your connection.", "bot");
   }
 }
 
+// Send user message
 function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
@@ -25,6 +28,7 @@ function sendMessage() {
   }, 500);
 }
 
+// Add messages to chat box
 function appendMessage(text, sender) {
   const chatBox = document.getElementById("chatBox");
   const msg = document.createElement("div");
@@ -34,7 +38,7 @@ function appendMessage(text, sender) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// ✅ Improved logic – avoids repeating wrong answers
+// Find best answer match
 function getAnswer(userQuestion) {
   userQuestion = userQuestion.toLowerCase();
 
@@ -50,6 +54,8 @@ function getAnswer(userQuestion) {
     }
   });
 
+  console.log(`User: "${userQuestion}" → Best match score: ${highestScore}`);
+
   if (highestScore > 0.4 && bestMatch) {
     return bestMatch.answer;
   }
@@ -57,7 +63,7 @@ function getAnswer(userQuestion) {
   return "🤔 I’m not sure I understand that. Could you rephrase or ask something else about our careers?";
 }
 
-// ✅ Basic similarity calculation
+// Basic word-based similarity scoring
 function similarityScore(a, b) {
   const wordsA = a.split(" ");
   const wordsB = b.split(" ");
@@ -65,5 +71,5 @@ function similarityScore(a, b) {
   return matches.length / Math.max(wordsA.length, wordsB.length);
 }
 
-// ✅ Load FAQs when chatbot starts
+// Load FAQs on startup
 loadFAQs();
