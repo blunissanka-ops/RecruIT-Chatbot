@@ -29,7 +29,6 @@
         }
       ]
     },
-
     {
       "category": "Requirements & Qualifications",
       "questions": [
@@ -39,7 +38,7 @@
         },
         {
           "question": "Are there any age or experience limits for applying to jobs?",
-          "answer": "No, there isn’t an exact age requirement to apply for the job. But some positions do require a certain time period of experience. For example, senior roles usually require 3-5 years of work experience, while internships or junior positions are available for new graduates."
+          "answer": "No, there isn’t an exact age requirement to apply for the job. But some positions do require a certain time period of experience. For example, senior roles usually require 3–5 years of work experience, while internships or junior positions are available for new graduates."
         },
         {
           "question": "How can I know if I meet the qualifications for a particular job?",
@@ -47,7 +46,7 @@
         },
         {
           "question": "Are professional qualifications required?",
-          "answer": "Not always! Certifications like CIMA, ACCA, PMP and HRM Diplomas are considered an advantage but not a requirement unless mentioned otherwise in the job description."
+          "answer": "Not always! Certifications like CIMA, ACCA, PMP, and HRM Diplomas are considered an advantage but not a requirement unless mentioned otherwise in the job description."
         },
         {
           "question": "Does the company provide training programs if I don’t meet all requirements?",
@@ -55,7 +54,6 @@
         }
       ]
     },
-
     {
       "category": "Application Status & Feedback",
       "questions": [
@@ -89,7 +87,6 @@
         }
       ]
     },
-
     {
       "category": "Interview-Related Questions",
       "questions": [
@@ -112,6 +109,130 @@
         {
           "question": "Who will conduct my interview and how long will it take?",
           "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role. You will be informed of the exact time and interviewer details in advance."
+        }
+      ]
+    },
+    {
+      "category": "General HR Policies",
+      "questions": [
+        {
+          "question": "What are HR policies, and why are they important?",
+          "answer": "HR policies are official guidelines outlining the company’s rules, expectations, and procedures regarding employee behavior, rights, and responsibilities. They ensure fairness, legal compliance, and consistency."
+        },
+        {
+          "question": "Where can I access the company’s HR policies?",
+          "answer": "All HR policies are available on the company intranet under the 'HR Documents' section or upon request from the HR department."
+        },
+        {
+          "question": "Are HR policies the same for all employees?",
+          "answer": "Most policies apply to all employees, though some may vary based on employment type such as permanent, probationary, or contract staff."
+        }
+      ]
+    },
+    {
+      "category": "Leave & Attendance",
+      "questions": [
+        {
+          "question": "How many annual leave days am I entitled to?",
+          "answer": "Permanent employees are entitled to 14 days of annual leave per year after completing one year of service."
+        },
+        {
+          "question": "What is the procedure for applying for leave?",
+          "answer": "Employees must submit a leave request through the HR portal or inform their supervisor at least 3 days in advance for approval."
+        },
+        {
+          "question": "What happens if I fall sick unexpectedly?",
+          "answer": "You must notify your supervisor and HR immediately. A medical certificate is required if you are absent for more than 2 consecutive days."
+        }
+      ]
+    },
+    {
+      "category": "Working Hours & Attendance",
+      "questions": [
+        {
+          "question": "What are the standard working hours?",
+          "answer": "The official working hours are from 8:30 AM to 5:00 PM, Monday to Friday, with a one-hour lunch break."
+        },
+        {
+          "question": "What is the policy on late arrivals and early departures?",
+          "answer": "Frequent lateness or early departures without valid reasons may result in disciplinary action according to the attendance policy."
+        },
+        {
+          "question": "Is remote work allowed?",
+          "answer": "Remote or hybrid work is available based on departmental needs and management approval."
+        }
+      ]
+    },
+    {
+      "category": "Employee Conduct & Discipline",
+      "questions": [
+        {
+          "question": "What actions are considered misconduct?",
+          "answer": "Examples include insubordination, harassment, misuse of company property, falsification of records, or breach of confidentiality."
+        },
+        {
+          "question": "What is the disciplinary procedure for policy violations?",
+          "answer": "HR will conduct an investigation and issue appropriate actions such as warnings, suspension, or termination depending on the severity."
+        }
+      ]
+    },
+    {
+      "category": "Performance Management",
+      "questions": [
+        {
+          "question": "How often are performance appraisals conducted?",
+          "answer": "Performance reviews are conducted annually with mid-year evaluations for progress and feedback."
+        },
+        {
+          "question": "What criteria are used for performance evaluation?",
+          "answer": "Evaluations are based on quality of work, goal achievement, teamwork, attendance, and adherence to company values."
+        }
+      ]
+    },
+    {
+      "category": "Compensation & Benefits",
+      "questions": [
+        {
+          "question": "When is the salary paid each month?",
+          "answer": "Salaries are credited to your bank account on or before the 25th of every month."
+        },
+        {
+          "question": "Are there any performance-based bonuses?",
+          "answer": "Yes. Employees meeting or exceeding performance targets are eligible for bonuses subject to management approval."
+        },
+        {
+          "question": "What benefits does the company provide?",
+          "answer": "Benefits may include medical coverage, professional development opportunities, and employee welfare programs."
+        }
+      ]
+    },
+    {
+      "category": "Resignation & Termination",
+      "questions": [
+        {
+          "question": "How much notice should I give before resigning?",
+          "answer": "Employees must provide at least one month’s written notice before resigning."
+        },
+        {
+          "question": "When will I receive my final settlement after resignation?",
+          "answer": "Final settlements are processed within 14 working days after clearance from all departments."
+        },
+        {
+          "question": "Can the company terminate my employment?",
+          "answer": "Yes. The company may terminate employment in cases of policy violation, redundancy, or poor performance, following due process."
+        }
+      ]
+    },
+    {
+      "category": "Training & Development",
+      "questions": [
+        {
+          "question": "Does the company offer training programs?",
+          "answer": "Yes, the company provides internal and external training to enhance skills and support career development."
+        },
+        {
+          "question": "Can I request additional training?",
+          "answer": "Yes, employees may submit a training request to their supervisor or HR for approval."
         }
       ]
     }
