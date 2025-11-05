@@ -1,18 +1,20 @@
 {
-  "apply": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking “Apply Now”.",
-  "more than one position": "Absolutely! You may apply for multiple roles if you’re suitable for them.",
-  "documents": "You need to upload your updated CV, and optionally a cover letter or LinkedIn profile.",
-  "application received": "Once submitted, you’ll receive an email confirmation from our recruitment team.",
-  "no experience": "Yes! We welcome fresh graduates and career changers who have a passion to learn.",
-  "degree": "A degree is beneficial but not mandatory. Skills and experience matter most!",
-  "qualifications": "You should have the background mentioned in the job post — typically a diploma or degree.",
-  "age": "There’s no age limit, though senior roles may require 3–5 years of experience.",
-  "training": "Yes, our Learning & Development team provides training to bridge skill gaps.",
-  "status": "You can check your application status by logging into your candidate profile on our careers portal.",
-  "feedback": "Our recruitment team provides feedback within 7–10 working days after your interview.",
-  "not selected": "Yes, you’ll receive an email if you’re not selected once the process is complete.",
-  "interview feedback": "You can request feedback by contacting the HR Recruitment Team through the portal.",
-  "under review": "It means your application is still being evaluated by the recruitment team.",
-  "update resume": "Yes, you can update details before the job posting closes.",
-  "apply again": "Of course! You can apply for future roles or join our talent pool."
+  "greetings": [
+    "Hello! 👋 I'm RecruIT, your AI assistant from NextGen Systems. How can I help you today?",
+    "Hi there! 👋 Looking for information about careers or job applications?",
+    "Hey! 😊 I’m RecruIT, here to guide you with NextGen Systems’ recruitment process."
+  ],
+
+  "faqs": {
+    "how can i apply for a job": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking 'Apply Now'. Once you submit your CV, our recruitment team will review your application.",
+    "can i apply for more than one position": "Absolutely! You can apply for multiple roles that fit your skills and experience.",
+    "do i need a degree": "A degree is helpful but not required for all roles. We value skills, creativity, and experience too!",
+    "how long does feedback take after interview": "Feedback is usually provided within 7–10 working days after your interview.",
+    "can i request interview feedback": "Yes, you can reply to your interview email or contact HR via the careers portal for feedback.",
+    "what does under review mean": "'Under Review' means your application is being evaluated by our hiring team.",
+    "can i update my resume": "Yes, you can update your profile before the job posting closes.",
+    "can i apply again": "Of course! You’re welcome to apply for other positions that match your skills.",
+    "are there any age or experience limits": "No age limits! Some roles may require specific experience levels though.",
+    "does the company offer training": "Yes! Our Learning and Development team offers training to help bridge any skill gaps."
+  }
 }
