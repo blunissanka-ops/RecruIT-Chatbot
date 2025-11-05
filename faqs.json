@@ -1,38 +1,119 @@
-[
-  {
-    "question": "How can I apply for a job at NextGen Systems?",
-    "answer": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking 'Apply Now'. Once you submit your CV and details, our recruitment team will review your application and contact you if you are shortlisted."
-  },
-  {
-    "question": "Can I apply for more than one position?",
-    "answer": "Absolutely! If you feel you’re suitable for multiple roles, you’re welcome to apply for more than one. Just make sure each application matches your skills and experience."
-  },
-  {
-    "question": "Do I need a degree to apply?",
-    "answer": "A degree is beneficial, but not mandatory for all roles. We value skills, practical experience, problem-solving ability, and creativity."
-  },
-  {
-    "question": "What documents do I need to submit?",
-    "answer": "You should upload your updated CV. A cover letter and links to your portfolio or LinkedIn profile are also recommended."
-  },
-  {
-    "question": "Can I apply if I don’t have IT experience?",
-    "answer": "Yes! We welcome fresh graduates and career changers who are passionate and eager to learn. Some roles are specifically designed for entry-level applicants."
-  },
-  {
-    "question": "What is the current status of my job application?",
-    "answer": "You can check your application status by logging into your candidate profile on our careers portal and selecting 'My Applications'."
-  },
-  {
-    "question": "How long does it take to receive feedback after an interview?",
-    "answer": "Typically, our recruitment team provides feedback within 7–10 working days after your interview."
-  },
-  {
-    "question": "Can I update my resume after submitting?",
-    "answer": "Yes, you can update your details by logging into your profile before the job posting closes. Once the deadline passes, you can submit a new application."
-  },
-  {
-    "question": "Who will conduct my interview?",
-    "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role."
-  }
-]
+{
+  "faqs": [
+    {
+      "category": "Applying for Jobs",
+      "questions": [
+        {
+          "question": "How can I apply for a job at NextGen Systems?",
+          "answer": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking “Apply Now”. Once you submit your CV and details, our recruitment team will review your application and contact you if you are shortlisted."
+        },
+        {
+          "question": "Can I apply for more than one position at the same time?",
+          "answer": "Absolutely! If you feel you’re suitable for multiple roles, you’re welcome to apply for more than one. Just make sure each application matches your skills and experience."
+        },
+        {
+          "question": "What documents do I need to submit with my application?",
+          "answer": "You will need to upload your updated CV. We also encourage you to include a cover letter and links to your portfolio or LinkedIn profile (if available), especially for technical roles."
+        },
+        {
+          "question": "How will I know if my application was received?",
+          "answer": "Once your application is successfully submitted, you will receive an email confirmation. You may also receive a message from RecruIT acknowledging your submission."
+        },
+        {
+          "question": "Can I apply if I don’t have previous IT industry experience?",
+          "answer": "Yes! We welcome applications from fresh graduates and candidates from different industries. If you have passion, willingness to learn, and basic relevant skills, we encourage you to apply. Some roles are specifically designed for entry-level applicants."
+        },
+        {
+          "question": "Do I need a degree to apply for a position?",
+          "answer": "A degree is beneficial, but not mandatory for all roles. We value skills, practical experience, problem-solving ability, and creativity. If you don’t have a degree but have strong project experience, certifications, or a solid portfolio, we’d still love to hear from you."
+        }
+      ]
+    },
+
+    {
+      "category": "Requirements & Qualifications",
+      "questions": [
+        {
+          "question": "What are the basic qualifications needed to apply for a position in your company?",
+          "answer": "To apply for any position at our company, you should have at least the educational background and experience represented in the job advertisement. Generally, for starter level roles, a diploma or degree in the related field is needed. Some technical roles may also require specific qualifications or training."
+        },
+        {
+          "question": "Are there any age or experience limits for applying to jobs?",
+          "answer": "No, there isn’t an exact age requirement to apply for the job. But some positions do require a certain time period of experience. For example, senior roles usually require 3-5 years of work experience, while internships or junior positions are available for new graduates."
+        },
+        {
+          "question": "How can I know if I meet the qualifications for a particular job?",
+          "answer": "Each job posting includes a detailed list of required qualifications, skills, and experience. Before applying, compare your background and work experience with those mentioned in the job description. If you meet most of the listed requirements, you’re suitable to apply."
+        },
+        {
+          "question": "Are professional qualifications required?",
+          "answer": "Not always! Certifications like CIMA, ACCA, PMP and HRM Diplomas are considered an advantage but not a requirement unless mentioned otherwise in the job description."
+        },
+        {
+          "question": "Does the company provide training programs if I don’t meet all requirements?",
+          "answer": "Yes! We believe in growth. For their current and future roles, our Learning and Development team offers training programs to assist employees in acquiring skills gaps."
+        }
+      ]
+    },
+
+    {
+      "category": "Application Status & Feedback",
+      "questions": [
+        {
+          "question": "What is the current status of my job application?",
+          "answer": "You can check your application status by logging into your candidate profile on our Careers Portal. Once logged in, select “My Applications” to view whether your application is under review, shortlisted, or completed."
+        },
+        {
+          "question": "How long does it take to receive feedback after an interview?",
+          "answer": "Typically, our recruitment team provides feedback within 7 to 10 working days after your interview. However, timelines may vary depending on the position and number of applicants."
+        },
+        {
+          "question": "Will I be notified if I am not selected?",
+          "answer": "Yes, we ensure every candidate is informed of the outcome. If you are not selected, you will receive an email notification with feedback or a general update once the recruitment process for that role is completed."
+        },
+        {
+          "question": "Can I request detailed feedback on my interview performance?",
+          "answer": "Yes, you may request feedback by replying to your interview confirmation email or contacting the HR Recruitment Team through the careers portal. Feedback is provided where possible to help candidates improve for future opportunities."
+        },
+        {
+          "question": "My application has been under review for a long time. What does that mean?",
+          "answer": "“Under Review” means your application is still being evaluated by our recruitment team or the hiring manager. Sometimes, reviews take longer due to a high volume of applications or ongoing internal discussions."
+        },
+        {
+          "question": "Can I update my resume or details after submitting the application?",
+          "answer": "Yes, you can update your details by logging into your profile before the job posting closes. Once the application deadline passes, edits can no longer be made, but you may submit a new updated application for the same or future roles."
+        },
+        {
+          "question": "If I’m not selected for this role, can I apply again?",
+          "answer": "Absolutely! We encourage you to apply for other roles that match your skills and experience. You can also join our talent pool to be considered for future openings that suit your profile."
+        }
+      ]
+    },
+
+    {
+      "category": "Interview-Related Questions",
+      "questions": [
+        {
+          "question": "When will I be called for the interview after submitting my application?",
+          "answer": "Once you submit your application, our HR team reviews it within 5–7 working days. If your profile matches the requirements, you will receive an interview invitation via email or SMS."
+        },
+        {
+          "question": "How will the interview be conducted – online or face-to-face?",
+          "answer": "We usually conduct the first round online (via Google Meet or MS Teams). The final round is generally held on-site at our Colombo office. The interview type will be clearly mentioned in your invitation."
+        },
+        {
+          "question": "What should I bring to the interview?",
+          "answer": "Please bring a printed CV, national ID, and any supporting documents such as certificates or portfolios. For online interviews, ensure you have a stable internet connection, camera, and quiet environment."
+        },
+        {
+          "question": "How can I prepare for the interview?",
+          "answer": "Review the job description, learn about NextGen Systems’ products and culture, and be ready to discuss your skills, experience, and achievements. RecruIT can share sample interview questions if you’d like!"
+        },
+        {
+          "question": "Who will conduct my interview and how long will it take?",
+          "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role. You will be informed of the exact time and interviewer details in advance."
+        }
+      ]
+    }
+  ]
+}
