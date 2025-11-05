@@ -1,18 +1,18 @@
 [
   {
-    "question": "how can i apply for a job",
-    "answer": "You can apply through our <a href='#' class='link-btn'>Careers Page</a> by selecting your desired role and submitting your CV."
+    "question": "How can I apply for a job?",
+    "answer": "You can visit our Careers Page on the NextGen Systems website and submit your application online."
   },
   {
-    "question": "application status",
-    "answer": "Log into your candidate profile on our careers portal. Click 'My Applications' to see your current status."
+    "question": "What is the hiring process like?",
+    "answer": "Our process includes an online application, a technical assessment, and two rounds of interviews with our HR and project teams."
   },
   {
-    "question": "do i need a degree",
-    "answer": "A degree helps, but we also value skills, certifications, and creativity. If you have strong experience, we’d love to hear from you!"
+    "question": "Do you offer internships?",
+    "answer": "Yes! We offer internship programs for students and graduates interested in software engineering, data analysis, and smart automation."
   },
   {
-    "question": "training programs",
-    "answer": "Yes! Our Learning and Development team offers continuous training programs to enhance your skills."
+    "question": "Where is your office located?",
+    "answer": "Our main office is located in Colombo, Sri Lanka, with remote work options available for selected roles."
   }
 ]
