@@ -8,7 +8,6 @@ let faqsData = [];
 fetch('faqs.json')
   .then(response => response.json())
   .then(data => {
-    // Flatten all questions into a single array
     faqsData = data.faqs.flatMap(cat => cat.questions);
   })
   .catch(error => console.error('Error loading FAQs:', error));
@@ -39,33 +38,53 @@ function handleUserInput() {
   setTimeout(() => appendMessage('bot', reply), 400);
 }
 
-// Function to clean text for comparison
+// Clean text: lowercase + remove punctuation
 function cleanText(text) {
   return text
     .toLowerCase()
-    .replace(/[^\w\s]/gi, '') // remove punctuation
+    .replace(/[^\w\s]/gi, '')
     .trim();
 }
 
+// Find best matching answer
 function findAnswer(userMessage) {
   const cleanedMessage = cleanText(userMessage);
 
-  // First, try exact keyword match in cleaned questions
+  // Step 1: Exact match
   const exactMatch = faqsData.find(faq => cleanText(faq.question) === cleanedMessage);
   if (exactMatch) return exactMatch.answer;
 
-  // If no exact match, use word-based scoring
+  // Step 2: Keyword-based priority matching
   let bestMatch = null;
   let highestScore = 0;
 
   faqsData.forEach(faq => {
     const cleanedQuestion = cleanText(faq.question);
-    const words = cleanedMessage.split(' ');
 
-    // Count matching words
+    // Priority keywords for specific categories
+    const trainingKeywords = ['training', 'program', 'learning', 'development', 'upskill', 'workshop'];
+    const applicationKeywords = ['apply', 'application', 'submit', 'resume', 'cv'];
+    const interviewKeywords = ['interview', 'round', 'bring', 'prepare', 'called'];
+
     let score = 0;
+
+    // Boost score if keywords overlap
+    trainingKeywords.forEach(word => {
+      if (cleanedMessage.includes(word) && cleanedQuestion.includes(word)) score += 3;
+    });
+
+    applicationKeywords.forEach(word => {
+      if (cleanedMessage.includes(word) && cleanedQuestion.includes(word)) score += 2;
+    });
+
+    interviewKeywords.forEach(word => {
+      if (cleanedMessage.includes(word) && cleanedQuestion.includes(word)) score += 2;
+    });
+
+    // General word matching fallback
+    const words = cleanedMessage.split(' ');
     words.forEach(word => {
-      if (cleanedQuestion.includes(word)) score++;
+      if (cleanedQuestion.includes(word)) score += 1;
     });
 
     if (score > highestScore) {
@@ -74,11 +93,10 @@ function findAnswer(userMessage) {
     }
   });
 
-  // If a good match is found, return the answer
   if (bestMatch && highestScore > 0) {
     return bestMatch.answer;
   }
 
-  // Fallback if nothing matches
+  // Default fallback
   return "Hello there! 👋 How can I assist you with NextGen Systems’ careers or HR policies today?";
 }
