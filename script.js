@@ -1,173 +1,158 @@
-let faqsData = [];
-let darkMode = false;
-let theme = 'Sunset Gradient';
+let faqsData=[];
+let darkMode=false,theme='Blue Gradient';
 
-const chatMessages = document.querySelector('.chat-messages');
-const sendBtn = document.querySelector('#send-btn');
-const clearBtn = document.querySelector('#clear-btn');
-const userInput = document.querySelector('#user-input');
-const themeSelect = document.querySelector('#theme-select');
-const colorPicker = document.querySelector('#custom-color');
-const darkToggle = document.querySelector('#dark-toggle');
-const minimizeBtn = document.querySelector('#minimize-btn');
-const closeBtn = document.querySelector('#close-btn');
-const chatWrapper = document.querySelector('.chat-wrapper');
-const chatLauncher = document.querySelector('#chat-launcher');
-const suggestionsBox = document.querySelector('.suggestion-list');
+const chatWrapper=document.querySelector('.chat-wrapper');
+const chatWidget=document.querySelector('.chat-widget');
+const chatLauncher=document.querySelector('#chat-launcher');
+const chatMessages=document.querySelector('.chat-messages');
+const sendBtn=document.querySelector('#send-btn');
+const clearBtn=document.querySelector('#clear-btn');
+const userInput=document.querySelector('#user-input');
+const themeSelect=document.querySelector('#theme-select');
+const colorPicker=document.querySelector('#custom-color');
+const darkToggle=document.querySelector('#dark-toggle');
+const menuBtn=document.querySelector('#menu-btn');
+const menuDropdown=document.querySelector('#menu-dropdown');
+const fullscreenBtn=document.querySelector('#fullscreen-btn');
+const exitFullscreenBtn=document.querySelector('#exit-fullscreen-btn');
+const suggestionsBox=document.querySelector('.suggestion-list');
 
-/* ---------- Load FAQs ---------- */
+/* Load FAQ data */
 fetch('faqs.json')
-  .then(res => res.json())
-  .then(data => (faqsData = data))
-  .catch(() => appendMessage('bot', '⚠️ Could not load FAQs.'));
+  .then(r=>r.json())
+  .then(d=>faqsData=d)
+  .catch(()=>appendMessage('bot','⚠️ Unable to load FAQs.'));
 
-/* ---------- Utilities ---------- */
-function appendMessage(sender, text) {
-  const msg = document.createElement('div');
-  msg.classList.add('message', sender);
-  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  msg.innerHTML = `<p>${text}</p><span class="meta">${time}</span>`;
+/* Append message */
+function appendMessage(sender,text){
+  const msg=document.createElement('div');
+  msg.classList.add('message',sender);
+  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  msg.innerHTML=`<p>${text}</p><span class="meta">${t}</span>`;
   chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
-function cleanText(str) {
-  return str.toLowerCase().replace(/[^a-z0-9\s]/g, '');
+/* Clean text */
+function cleanText(str){return str.toLowerCase().replace(/[^a-z0-9\s]/g,'');}
+
+/* Similarity */
+function similarity(a,b){
+  const A=cleanText(a).split(/\s+/),B=cleanText(b).split(/\s+/);
+  const inter=A.filter(x=>B.includes(x));
+  return inter.length/Math.max(A.length,B.length);
 }
 
-function similarity(a, b) {
-  const aWords = cleanText(a).split(/\s+/);
-  const bWords = cleanText(b).split(/\s+/);
-  const common = aWords.filter(x => bWords.includes(x));
-  return common.length / Math.max(aWords.length, bWords.length);
+/* Find answer */
+function findAnswer(msg){
+  const cleaned=cleanText(msg);
+  let best=null,bestScore=0;
+  faqsData.forEach(f=>{
+    const score=similarity(cleaned,f.question+' '+f.keywords.join(' '));
+    if(score>bestScore){best=f;bestScore=score;}
+  });
+  if(bestScore>0.15) return best.answer;
+  const fallback=faqsData.find(f=>f.question.toLowerCase().includes(cleaned.split(' ')[0]));
+  if(fallback) return fallback.answer;
+  return "🤔 I'm not sure about that. Try asking about jobs, qualifications, or training.";
 }
 
-/* ---------- Core Answer Finder ---------- */
-function findAnswer(userMsg) {
-  const cleaned = cleanText(userMsg);
-  let best = null,
-    bestScore = 0;
-
-  for (const faq of faqsData) {
-    const combined = faq.question + ' ' + faq.keywords.join(' ');
-    const score = similarity(cleaned, combined);
-    if (score > bestScore) {
-      best = faq;
-      bestScore = score;
-    }
-  }
-
-  // Partial match fallback (for one-word queries)
-  if (!best || bestScore < 0.15) {
-    const fallback = faqsData.find(f =>
-      f.question.toLowerCase().includes(cleaned.split(' ')[0])
-    );
-    if (fallback) return fallback.answer;
-  }
-
-  if (best && bestScore > 0.15) return best.answer;
-  return "🤔 I’m not sure about that. Try asking about jobs, qualifications, or training.";
-}
-
-/* ---------- Typing animation ---------- */
-function showTyping() {
-  const el = document.createElement('div');
-  el.classList.add('message', 'bot');
-  el.innerHTML = `<p>● ● ●</p>`;
+/* Typing animation */
+function showTyping(){
+  const el=document.createElement('div');
+  el.classList.add('message','bot','typing');
+  el.textContent='...';
   chatMessages.appendChild(el);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.scrollTop=chatMessages.scrollHeight;
   return el;
 }
 
-/* ---------- Message sending ---------- */
-function handleUserInput() {
-  const msg = userInput.value.trim();
-  if (!msg) return;
-  appendMessage('user', msg);
-  userInput.value = '';
-  suggestionsBox.innerHTML = '';
-
-  const typing = showTyping();
-  setTimeout(() => {
+/* Handle input */
+function handleUserInput(){
+  const msg=userInput.value.trim();
+  if(!msg)return;
+  appendMessage('user',msg);
+  userInput.value='';
+  suggestionsBox.innerHTML='';
+  const typing=showTyping();
+  setTimeout(()=>{
     typing.remove();
-    const reply = findAnswer(msg);
-    appendMessage('bot', reply);
-  }, 800);
+    appendMessage('bot',findAnswer(msg));
+  },700);
 }
 
-/* ---------- Clear chat ---------- */
-function clearChat() {
-  chatMessages.innerHTML = '';
-  suggestionsBox.innerHTML = '';
-  appendMessage('bot', '🧹 Chat cleared. How can I help you again?');
+/* Clear chat */
+function clearChat(){
+  chatMessages.innerHTML='';
+  appendMessage('bot','🧹 Chat cleared. How can I help you again?');
 }
 
-/* ---------- Event Listeners ---------- */
-sendBtn.addEventListener('click', handleUserInput);
-clearBtn.addEventListener('click', clearChat);
-userInput.addEventListener('keypress', e => {
-  if (e.key === 'Enter') handleUserInput();
-});
-
-/* ---------- Suggestion System ---------- */
-userInput.addEventListener('input', e => {
-  const query = e.target.value.toLowerCase();
-  if (!query) return (suggestionsBox.innerHTML = '');
-
-  const matches = faqsData
-    .filter(f => f.question.toLowerCase().includes(query))
-    .slice(0, 5);
-
-  suggestionsBox.innerHTML = '';
-  matches.forEach(faq => {
-    const btn = document.createElement('button');
-    btn.className = 'suggestion';
-    btn.textContent = faq.question;
-    btn.onclick = () => {
-      userInput.value = faq.question;
-      suggestionsBox.innerHTML = '';
-      handleUserInput();
-    };
-    suggestionsBox.appendChild(btn);
+/* Suggestions */
+userInput.addEventListener('input',e=>{
+  const q=e.target.value.toLowerCase();
+  if(!q){suggestionsBox.innerHTML='';return;}
+  const matches=faqsData.filter(f=>f.question.toLowerCase().includes(q)).slice(0,5);
+  suggestionsBox.innerHTML='';
+  matches.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='suggestion';b.textContent=f.question;
+    b.onclick=()=>{userInput.value=f.question;suggestionsBox.innerHTML='';handleUserInput();};
+    suggestionsBox.appendChild(b);
   });
 });
 
-/* ---------- Theme and Color ---------- */
-function applyTheme() {
-  const themes = {
-    'Blue Gradient': ['#007BFF', '#00C6FF'],
-    'Purple Gradient': ['#7b61ff', '#c56fff'],
-    'Mint Gradient': ['#00C9A7', '#92FE9D'],
-    'Sunset Gradient': ['#ff9966', '#ff5e62'],
+/* Theme + dark mode */
+function applyTheme(){
+  const tMap={
+    'Blue Gradient':['#007BFF','#00C6FF'],
+    'Purple Gradient':['#7b61ff','#c56fff'],
+    'Mint Gradient':['#00C9A7','#92FE9D'],
+    'Sunset Gradient':['#ff9966','#ff5e62']
   };
-  const [c1, c2] = themes[theme] || themes['Blue Gradient'];
-  document.documentElement.style.setProperty('--primary-1', c1);
-  document.documentElement.style.setProperty('--primary-2', c2);
+  const[c1,c2]=tMap[theme]||tMap['Blue Gradient'];
+  document.documentElement.style.setProperty('--primary-1',c1);
+  document.documentElement.style.setProperty('--primary-2',c2);
 }
+themeSelect.addEventListener('change',e=>{theme=e.target.value;applyTheme();});
+colorPicker.addEventListener('input',e=>{
+  const c=e.target.value;
+  document.documentElement.style.setProperty('--primary-1',c);
+  document.documentElement.style.setProperty('--primary-2',c);
+});
+darkToggle.addEventListener('change',e=>{
+  darkMode=e.target.checked;
+  document.documentElement.classList.toggle('dark',darkMode);
+});
 
-themeSelect.addEventListener('change', e => {
-  theme = e.target.value;
+/* Menu dropdown */
+menuBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  menuDropdown.classList.toggle('hidden');
+});
+document.addEventListener('click',()=>menuDropdown.classList.add('hidden'));
+
+/* Fullscreen */
+fullscreenBtn.addEventListener('click',()=>{
+  chatWidget.classList.add('fullscreen');
+  fullscreenBtn.classList.add('hidden');
+  exitFullscreenBtn.classList.remove('hidden');
+});
+exitFullscreenBtn.addEventListener('click',()=>{
+  chatWidget.classList.remove('fullscreen');
+  fullscreenBtn.classList.remove('hidden');
+  exitFullscreenBtn.classList.add('hidden');
+});
+
+/* Launcher toggle */
+chatLauncher.addEventListener('click',()=>chatWrapper.classList.toggle('minimized'));
+
+/* Buttons */
+sendBtn.addEventListener('click',handleUserInput);
+clearBtn.addEventListener('click',clearChat);
+userInput.addEventListener('keypress',e=>{if(e.key==='Enter')handleUserInput();});
+
+/* Init */
+window.addEventListener('load',()=>{
   applyTheme();
-});
-
-colorPicker.addEventListener('input', e => {
-  const color = e.target.value;
-  document.documentElement.style.setProperty('--primary-1', color);
-  document.documentElement.style.setProperty('--primary-2', color);
-});
-
-darkToggle.addEventListener('change', e => {
-  darkMode = e.target.checked;
-  document.documentElement.classList.toggle('dark', darkMode);
-});
-
-/* ---------- Minimize/Maximize ---------- */
-minimizeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
-closeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
-chatLauncher.addEventListener('click', () => chatWrapper.classList.remove('minimized'));
-
-/* ---------- Initialization ---------- */
-window.addEventListener('load', () => {
-  applyTheme();
-  appendMessage('bot', '👋 Hello! I am your NextGen HR Assistant. How can I help you today?');
+  appendMessage('bot','👋 Hello! I am your NextGen HR Assistant. How can I help you today?');
 });
