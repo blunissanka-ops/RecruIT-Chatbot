@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextGen Systems HR Chatbot</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="chat-wrapper">
+    <div class="chat-container">
+      <header class="chat-header">
+        <div class="bot-avatar"></div>
+        <span>NextGen HR Assistant</span>
+      </header>
 
-  <div class="chat-container">
-    <div class="chat-header">
-      <div class="bot-avatar"></div> 
-      NextGen HR Assistant
-    </div>
-
-    <div class="chat-box">
-      <div class="message bot typing-indicator" style="display: none;">
-        <div class="typing-animation">
-          <span></span>
-          <span></span>
-          <span></span>
+      <main class="chat-box">
+        <div class="message bot typing-indicator" style="display:none;">
+          <div class="typing-animation"><span></span><span></span><span></span></div>
         </div>
-      </div>
-    </div>
+      </main>
 
-    <div class="input-container">
-      <input type="text" id="user-input" placeholder="Ask your HR question...">
-      <button id="send-btn">Send</button>
-      <button id="clear-btn" class="clear-btn">Clear</button>
+      <footer class="input-container">
+        <input type="text" id="user-input" placeholder="Ask your HR question..." autocomplete="off" />
+        <button id="send-btn">Send</button>
+        <button id="clear-btn">Clear</button>
+      </footer>
     </div>
   </div>
 
