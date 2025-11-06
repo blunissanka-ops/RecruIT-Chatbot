@@ -41,21 +41,30 @@ function similarity(a,b){
   return inter.length/Math.max(A.length,B.length);
 }
 
-function findAnswer(msg){
-  const text=cleanText(msg);
-  const greetings=["hi","hello","hey","good morning","good evening","good afternoon"];
-  if(greetings.some(g=>text.includes(g)))
+function findAnswer(msg) {
+  const text = cleanText(msg);
+  const greetings = ["hi","hello","hey","good morning","good evening","good afternoon"];
+  if (greetings.some(g => text.includes(g)))
     return "👋 Hello there! How can I assist you today? You can ask about jobs, application status, or training.";
 
-  let best=null,bestScore=0;
-  faqsData.forEach(f=>{
-    const score=similarity(text,f.question+" "+f.keywords.join(" "));
-    if(score>bestScore){best=f;bestScore=score;}
+  let best = null, bestScore = 0;
+  faqsData.forEach(f => {
+    const score = similarity(text, f.question + " " + f.keywords.join(" "));
+    if (score > bestScore) { best = f; bestScore = score; }
   });
-  if(bestScore>0.15) return best.answer;
-  const fallback=faqsData.find(f=>f.question.toLowerCase().includes(text.split(" ")[0]));
-  if(fallback) return fallback.answer;
-  return "🤔 I'm not sure about that. Try asking about jobs, qualifications, or training.";
+
+  // If no good match, look for partials
+  if (bestScore > 0.1) return best.answer;
+  const partial = faqsData.find(f => {
+    const qWords = f.question.toLowerCase().split(" ");
+    return qWords.some(w => text.includes(w));
+  });
+  if (partial) return partial.answer;
+
+  // Default fallback
+  return "🤔 I couldn’t find an exact match. Try asking about applying, training, or interviews.";
+}
+
 }
 
 function showTyping(){
