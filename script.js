@@ -1,109 +1,193 @@
-let faqsData=[];
-let darkMode=false,theme="Blue Gradient";
-const chatWrapper=document.querySelector(".chat-wrapper");
-const chatWidget=document.querySelector(".chat-widget");
-const chatLauncher=document.querySelector("#chat-launcher");
-const chatMessages=document.querySelector(".chat-messages");
-const sendBtn=document.querySelector("#send-btn");
-const clearBtn=document.querySelector("#clear-btn");
-const userInput=document.querySelector("#user-input");
-const themeSelect=document.querySelector("#theme-select");
-const colorPicker=document.querySelector("#custom-color");
-const darkToggle=document.querySelector("#dark-toggle");
-const menuBtn=document.querySelector("#menu-btn");
-const menuDropdown=document.querySelector("#menu-dropdown");
-const suggestionsBox=document.querySelector(".suggestion-list");
+const chatBox = document.querySelector('.chat-box');
+const userInput = document.querySelector('#user-input');
+const sendBtn = document.querySelector('#send-btn');
+const clearBtn = document.querySelector('#clear-btn');
+const typingIndicator = document.querySelector('.typing-indicator');
 
-/* Load FAQs */
-fetch("faqs.json")
- .then(r=>r.json())
- .then(d=>{faqsData=d;appendMessage("bot","✅ FAQs loaded successfully!");})
- .catch(()=>appendMessage("bot","⚠️ Unable to load FAQs. Run with Live Server."));
+let faqsData = [];
+let isFaqsLoaded = false;
+const SCORE_THRESHOLD = 3; // Minimum score for a confident multi-word answer
 
-/* Messaging */
-function appendMessage(sender,text){
- const div=document.createElement("div");
- div.classList.add("message",sender);
- const time=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
- div.innerHTML=`<p>${text}</p><span class="meta">${time}</span>`;
- chatMessages.appendChild(div);
- chatMessages.scrollTop=chatMessages.scrollHeight;
+// --- Utility Functions ---
+
+function cleanText(text) {
+  // Clean text: lowercase + remove punctuation
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim();
 }
 
-function cleanText(t){return t.toLowerCase().replace(/[^a-z0-9\s]/g,"");}
-function similarity(a,b){
- const A=cleanText(a).split(/\s+/),B=cleanText(b).split(/\s+/);
- const inter=A.filter(x=>B.includes(x));
- return inter.length/Math.max(A.length,B.length);
+function appendMessage(sender, text, isTyping = false) {
+  if (isTyping) return;
+
+  const msg = document.createElement('div');
+  msg.classList.add('message', sender);
+  msg.innerHTML = `<p>${text}</p>`;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function findAnswer(msg){
- const txt=cleanText(msg);
- const greet=["hi","hello","hey"];
- if(greet.some(g=>txt.includes(g)))return"👋 Hello there! Ask me about jobs, status or training.";
- let best=null,bestScore=0;
- faqsData.forEach(f=>{
-  const s=similarity(txt,(f.question+" "+(f.keywords||[]).join(" ")));
-  if(s>bestScore){bestScore=s;best=f;}
- });
- if(bestScore>0.1)return best.answer;
- const partial=faqsData.find(f=>f.keywords&&f.keywords.some(k=>txt.includes(k)));
- return partial?partial.answer:"🤔 Sorry, I don’t have info on that. Try 'apply' or 'training'.";
+function showTypingIndicator(show) {
+  if (show) {
+    typingIndicator.style.display = 'flex';
+  } else {
+    typingIndicator.style.display = 'none';
+  }
+  // This ensures the typing indicator is visible at the bottom
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function showTyping(){
- const t=document.createElement("div");
- t.classList.add("message","bot");t.textContent="...";
- chatMessages.appendChild(t);
- chatMessages.scrollTop=chatMessages.scrollHeight;
- return t;
+// --- Chatbot Core Logic ---
+
+// Load FAQs asynchronously and handle UI state
+appendMessage('bot', '🤖 Initializing HR Chatbot. Please wait, loading knowledge base...');
+sendBtn.disabled = true;
+
+fetch('faqs.json')
+  .then(res => res.json())
+  .then(data => {
+    faqsData = data.faqs.flatMap(cat => cat.questions);
+    isFaqsLoaded = true;
+    sendBtn.disabled = false;
+
+    // Remove initial loading message
+    const loadingMessage = chatBox.querySelector('.bot p');
+    if (loadingMessage && loadingMessage.textContent.includes('Initializing HR Chatbot')) {
+      loadingMessage.closest('.message').remove();
+    }
+
+    appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
+  })
+  .catch(err => {
+    console.error('Error loading FAQs:', err);
+    appendMessage('bot', 'Error: Could not load FAQ data. Please check the faqs.json file.');
+  });
+
+function findAnswer(userMessage) {
+  if (!isFaqsLoaded) {
+    return 'I am still loading the knowledge base. Please wait a moment before sending a message.';
+  }
+
+  const cleanedMessage = cleanText(userMessage);
+  // Filter out common, short words (like 'i', 'a', 'the')
+  const userWords = cleanedMessage.split(/\s+/).filter(word => word.length > 2);
+
+  // Step 1: Exact Match
+  const exactMatch = faqsData.find(faq => cleanText(faq.question) === cleanedMessage);
+  if (exactMatch) return exactMatch.answer;
+
+  // Step 2: Keyword-based matching
+  let bestMatch = null;
+  let highestScore = 0;
+
+  faqsData.forEach(faq => {
+    let score = 0;
+    const faqKeywords = new Set(faq.keywords);
+
+    // Score based on overlap between user words and FAQ keywords
+    userWords.forEach(word => {
+      if (faqKeywords.has(word)) {
+        score++;
+      }
+    });
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestMatch = faq;
+    } else if (score === highestScore && score > 0) {
+      // Tie-breaker
+      if (bestMatch && faq.question.length < bestMatch.question.length) {
+        bestMatch = faq;
+      } else if (!bestMatch) {
+        bestMatch = faq;
+      }
+    }
+  });
+
+  const isSingleWordQuery = userWords.length === 1;
+
+  if (bestMatch) {
+    // If it's a single word query (e.g., 'jobs'), accept a score of 1 or more.
+    if (isSingleWordQuery && highestScore >= 1) {
+        return bestMatch.answer;
+    }
+    // Standard threshold for multi-word phrases/sentences
+    if (highestScore >= SCORE_THRESHOLD) {
+        return bestMatch.answer;
+    }
+  }
+
+  // Default fallback
+  return "I'm sorry, I couldn't find a direct answer to your question. Please try rephrasing or ask about common topics like 'jobs', 'application', 'benefits', or 'training'.";
 }
 
-function handleUserInput(text){
- const msg=text||userInput.value.trim();
- if(!msg)return;
- appendMessage("user",msg);userInput.value="";
- hideDropdown();
- const typing=showTyping();
- setTimeout(()=>{typing.remove();appendMessage("bot",findAnswer(msg));},600);
+// --- Conversational Logic (Fixes 'hi', 'thanks' failures) ---
+
+function handleGreetings(userMessage) {
+  const cleanedMessage = cleanText(userMessage);
+
+  const greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'greetings'];
+  const goodbye = ['bye', 'goodbye', 'see ya', 'cya', 'later'];
+  const acknowledgement = ['thank you', 'thanks', 'cheers'];
+
+  if (greetings.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
+    return 'Hello there! How can I assist you with HR matters today?';
+  }
+
+  if (goodbye.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
+    return 'Goodbye! Feel free to return if you have any other HR questions.';
+  }
+
+  if (acknowledgement.some(a => cleanedMessage.includes(a))) {
+    return 'You are very welcome! Is there anything else I can help you with?';
+  }
+
+  if (cleanedMessage.includes('how are you')) {
+      return "I'm a bot, but I'm operating perfectly! How can I help you with your HR query?";
+  }
+  
+  return null;
 }
 
-/* Suggestions */
-let dropdown;
-function createDropdown(){
- dropdown=document.createElement("div");
- dropdown.className="live-suggestions";
- document.querySelector(".chat-footer").appendChild(dropdown);
-}
-function showDropdown(items){
- if(!dropdown)createDropdown();
- dropdown.innerHTML="";
- items.forEach(it=>{
-  const d=document.createElement("div");
-  d.className="live-suggestion";d.textContent=it.question;
-  d.onclick=()=>{hideDropdown();handleUserInput(it.question);};
-  dropdown.appendChild(d);
- });
- dropdown.style.display=items.length?"block":"none";
-}
-function hideDropdown(){if(dropdown)dropdown.style.display="none";}
+// --- Event Handlers ---
 
-userInput.addEventListener("input",e=>{
- const q=e.target.value.toLowerCase();
- suggestionsBox.innerHTML="";
- if(!q){hideDropdown();return;}
- const m=faqsData.filter(f=>f.question.toLowerCase().includes(q)).slice(0,5);
- m.forEach(f=>{
-  const b=document.createElement("button");
-  b.className="suggestion";b.textContent=f.question;
-  b.onclick=()=>{suggestionsBox.innerHTML="";handleUserInput(f.question);};
-  suggestionsBox.appendChild(b);
- });
- showDropdown(m);
+sendBtn.addEventListener('click', handleUserInput);
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') handleUserInput();
 });
 
-/* Theme + dark */
-function applyTheme(){
- const map={"Blue Gradient":["#007BFF","#00C6FF"],"Purple Gradient":["#7b61ff","#c56fff"],"Mint Gradient":["#00C9A7","#92FE9D"],"Sunset Gradient":["#ff9966","#ff5e62"]};
- const [c1,c2]=map[theme]||map["Blue Gradient"];
- document.documentE
+clearBtn.addEventListener('click', () => {
+  chatBox.innerHTML = '';
+  appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
+});
+
+function handleUserInput() {
+  const userMessage = userInput.value.trim();
+  if (!userMessage || !isFaqsLoaded) return; 
+
+  // 1. Display user message
+  appendMessage('user', userMessage);
+  userInput.value = '';
+
+  // 2. Determine reply (Check for greetings first)
+  let reply = handleGreetings(userMessage);
+
+  if (reply === null) {
+    reply = findAnswer(userMessage);
+  }
+
+  // 3. Show typing indicator and disable button
+  showTypingIndicator(true);
+  sendBtn.disabled = true;
+
+  // 4. Delay response for UX
+  setTimeout(() => {
+    // 5. Hide typing indicator and enable send button
+    showTypingIndicator(false);
+    sendBtn.disabled = false;
+
+    // 6. Display bot reply
+    appendMessage('bot', reply);
+  }, 800); 
+}
