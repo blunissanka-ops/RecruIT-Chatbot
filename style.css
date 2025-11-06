@@ -1,4 +1,4 @@
-/* style.css (Complete and Final) */
+/* style.css (FIXED for UX/Overlap) */
 
 /* Base Styles */
 body {
@@ -92,46 +92,53 @@ body {
   color: #333;
 }
 
-/* Input Container and Button Styles */
+/* --- Input Bar and Suggestion Fixes --- */
+
+/* Input Container: Holds all elements at the bottom */
 .input-container {
   display: flex; 
   padding: 10px;
   background: #f2f6fa; 
   border-top: 1px solid #ccc;
   gap: 8px; 
+  /* Ensure this container does not hide overflow, but its parent handles it */
 }
 
-/* Autocomplete Container Styles (for positioning dropdown) */
+/* Autocomplete Container: Takes full width and provides relative context */
 .autocomplete-container {
-  flex: 1; /* Take up remaining space */
-  position: relative; /* Essential for positioning the suggestions list */
+  flex: 1; 
+  position: relative; /* CRITICAL: For positioning the suggestions list */
 }
 
-/* Update the input styling */
+/* User Input Field */
 .input-container input {
-  width: 100%; /* Make input fill the new container */
+  width: 100%; 
   border: 1px solid #ccc; 
   outline: none;
   padding: 10px;
   border-radius: 20px; 
   font-size: 14px;
+  /* Ensure the input sits on top of the suggestions when focused */
+  z-index: 110; 
 }
 
-/* Suggestions List Styles */
+/* Suggestions List: Positioned directly above the input */
 .suggestions-list {
   position: absolute;
-  bottom: 50px; /* Position it above the input field */
+  /* CRITICAL FIX: The height of the input is about 40px. 
+     Positioning at 'bottom: 48px' places it cleanly above the input bar (40px + 8px gap). */
+  bottom: 48px; 
   left: 0;
   right: 0;
   max-height: 180px; 
   overflow-y: auto;
-  z-index: 100; 
+  z-index: 100; /* Must be below the chat box but above input field */
   background: white;
   border: 1px solid #ccc;
-  border-top: none; /* Removed for cleaner look with rounded top */
+  /* Rounded corners at the top only */
   border-radius: 10px 10px 0 0;
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
-  display: none; /* Hidden by default */
+  display: none; 
   list-style: none;
   padding: 0;
   margin: 0;
@@ -150,10 +157,13 @@ body {
 }
 
 .suggestion-item:hover {
-  background-color: #e6f0ff; /* Light blue hover */
+  background-color: #e6f0ff; 
   color: #007bff;
 }
+/* --- End Input Bar and Suggestion Fixes --- */
 
+
+/* Button Styles */
 .input-container button {
   padding: 10px 18px; 
   border-radius: 20px; 
