@@ -1,29 +1,30 @@
 let faqsData = [];
-let darkMode = false, theme = "Blue Gradient";
 
-const chatWrapper = document.querySelector(".chat-wrapper");
-const chatWidget = document.querySelector(".chat-widget");
-const chatLauncher = document.querySelector("#chat-launcher");
-const chatMessages = document.querySelector(".chat-messages");
-const sendBtn = document.querySelector("#send-btn");
-const clearBtn = document.querySelector("#clear-btn");
-const userInput = document.querySelector("#user-input");
-const themeSelect = document.querySelector("#theme-select");
-const colorPicker = document.querySelector("#custom-color");
-const darkToggle = document.querySelector("#dark-toggle");
-const menuBtn = document.querySelector("#menu-btn");
-const menuDropdown = document.querySelector("#menu-dropdown");
-const fullscreenBtn = document.querySelector("#fullscreen-btn");
-const exitFullscreenBtn = document.querySelector("#exit-fullscreen-btn");
-const suggestionsBox = document.querySelector(".suggestion-list");
-
-/* ---------- Load FAQ data ---------- */
-fetch("faqs.json")
+// --- Load external faqs.json ---
+fetch("./faqs.json")
   .then(r => r.json())
-  .then(d => faqsData = d)
-  .catch(() => appendMessage("bot","⚠️ Unable to load FAQs."));
+  .then(d => {
+    faqsData = d;
+    appendMessage("bot","✅ FAQs loaded successfully!");
+  })
+  .catch(() => appendMessage("bot","⚠️ Unable to load FAQs. Please check faqs.json."));
 
-/* ---------- Messaging ---------- */
+const chatWrapper=document.querySelector(".chat-wrapper");
+const chatWidget=document.querySelector(".chat-widget");
+const chatLauncher=document.querySelector("#chat-launcher");
+const chatMessages=document.querySelector(".chat-messages");
+const sendBtn=document.querySelector("#send-btn");
+const clearBtn=document.querySelector("#clear-btn");
+const userInput=document.querySelector("#user-input");
+const themeSelect=document.querySelector("#theme-select");
+const colorPicker=document.querySelector("#custom-color");
+const darkToggle=document.querySelector("#dark-toggle");
+const menuBtn=document.querySelector("#menu-btn");
+const menuDropdown=document.querySelector("#menu-dropdown");
+const fullscreenBtn=document.querySelector("#fullscreen-btn");
+const exitFullscreenBtn=document.querySelector("#exit-fullscreen-btn");
+const suggestionsBox=document.querySelector(".suggestion-list");
+
 function appendMessage(sender,text){
   const msg=document.createElement("div");
   msg.classList.add("message",sender);
@@ -84,7 +85,7 @@ function clearChat(){
   appendMessage("bot","🧹 Chat cleared. How can I help you again?");
 }
 
-/* ---------- Live Suggestions ---------- */
+// --- Suggestions ---
 let suggestionDropdown;
 function createSuggestionDropdown(){
   suggestionDropdown=document.createElement("div");
@@ -108,7 +109,7 @@ function hideSuggestionDropdown(){
 }
 
 userInput.addEventListener("input",e=>{
-  const q=e.target.value.toLowerCase();
+  const q=e.target.value.toLowerCase().trim();
   suggestionsBox.innerHTML="";
   if(!q){hideSuggestionDropdown();return;}
   const matches=faqsData.filter(f=>f.question.toLowerCase().includes(q)).slice(0,5);
@@ -122,7 +123,6 @@ userInput.addEventListener("input",e=>{
   showSuggestionDropdown(matches);
 });
 
-/* ---------- Themes & Modes ---------- */
 function applyTheme(){
   const tMap={
     "Blue Gradient":["#007BFF","#00C6FF"],
@@ -130,22 +130,20 @@ function applyTheme(){
     "Mint Gradient":["#00C9A7","#92FE9D"],
     "Sunset Gradient":["#ff9966","#ff5e62"]
   };
-  const [c1,c2]=tMap[theme]||tMap["Blue Gradient"];
+  const [c1,c2]=tMap[themeSelect.value]||tMap["Blue Gradient"];
   document.documentElement.style.setProperty("--primary-1",c1);
   document.documentElement.style.setProperty("--primary-2",c2);
 }
-themeSelect.addEventListener("change",e=>{theme=e.target.value;applyTheme();});
+themeSelect.addEventListener("change",applyTheme);
 colorPicker.addEventListener("input",e=>{
   const c=e.target.value;
   document.documentElement.style.setProperty("--primary-1",c);
   document.documentElement.style.setProperty("--primary-2",c);
 });
 darkToggle.addEventListener("change",e=>{
-  darkMode=e.target.checked;
-  document.documentElement.classList.toggle("dark",darkMode);
+  document.documentElement.classList.toggle("dark",e.target.checked);
 });
 
-/* ---------- Menu & Fullscreen ---------- */
 menuBtn.addEventListener("click",e=>{
   e.stopPropagation();
   menuDropdown.classList.toggle("hidden");
@@ -161,14 +159,11 @@ exitFullscreenBtn.addEventListener("click",()=>{
   fullscreenBtn.classList.remove("hidden");
   exitFullscreenBtn.classList.add("hidden");
 });
-
-/* ---------- Launch & Events ---------- */
 chatLauncher.addEventListener("click",()=>chatWrapper.classList.toggle("minimized"));
 sendBtn.addEventListener("click",handleUserInput);
 clearBtn.addEventListener("click",clearChat);
 userInput.addEventListener("keypress",e=>{if(e.key==="Enter")handleUserInput();});
 
-/* ---------- Init ---------- */
 window.addEventListener("load",()=>{
   applyTheme();
   appendMessage("bot","👋 Hello! I am your NextGen HR Assistant. How can I help you today?");
