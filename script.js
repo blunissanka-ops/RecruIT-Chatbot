@@ -17,124 +17,112 @@ const fullscreenBtn = document.querySelector("#fullscreen-btn");
 const exitFullscreenBtn = document.querySelector("#exit-fullscreen-btn");
 const suggestionsBox = document.querySelector(".suggestion-list");
 
-/* ========== Load FAQ Data ========== */
+/* ---------- Load FAQ data ---------- */
 fetch("faqs.json")
   .then(r => r.json())
   .then(d => faqsData = d)
-  .catch(() => appendMessage("bot", "⚠️ Unable to load FAQs."));
+  .catch(() => appendMessage("bot","⚠️ Unable to load FAQs."));
 
-/* ========== Messaging Core ========== */
-function appendMessage(sender, text) {
-  const msg = document.createElement("div");
-  msg.classList.add("message", sender);
-  const t = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-  msg.innerHTML = `<p>${text}</p><span class="meta">${t}</span>`;
+/* ---------- Messaging ---------- */
+function appendMessage(sender,text){
+  const msg=document.createElement("div");
+  msg.classList.add("message",sender);
+  const t=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  msg.innerHTML=`<p>${text}</p><span class="meta">${t}</span>`;
   chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
-function cleanText(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g, ""); }
-
-function similarity(a, b) {
-  const A = cleanText(a).split(/\s+/), B = cleanText(b).split(/\s+/);
-  const inter = A.filter(x => B.includes(x));
-  return inter.length / Math.max(A.length, B.length);
+function cleanText(s){return s.toLowerCase().replace(/[^a-z0-9\s]/g,"");}
+function similarity(a,b){
+  const A=cleanText(a).split(/\s+/),B=cleanText(b).split(/\s+/);
+  const inter=A.filter(x=>B.includes(x));
+  return inter.length/Math.max(A.length,B.length);
 }
 
-/* Intelligent matcher with greetings */
-function findAnswer(msg) {
-  const text = cleanText(msg);
-  const greetings = ["hi","hello","hey","good morning","good evening","good afternoon"];
-  if (greetings.some(g => text.includes(g)))
+function findAnswer(msg){
+  const text=cleanText(msg);
+  const greetings=["hi","hello","hey","good morning","good evening","good afternoon"];
+  if(greetings.some(g=>text.includes(g)))
     return "👋 Hello there! How can I assist you today? You can ask about jobs, application status, or training.";
 
-  let best = null, bestScore = 0;
-  faqsData.forEach(f => {
-    const score = similarity(text, f.question + " " + f.keywords.join(" "));
-    if (score > bestScore) { best = f; bestScore = score; }
+  let best=null,bestScore=0;
+  faqsData.forEach(f=>{
+    const score=similarity(text,f.question+" "+f.keywords.join(" "));
+    if(score>bestScore){best=f;bestScore=score;}
   });
-  if (bestScore > 0.15) return best.answer;
-  const fallback = faqsData.find(f => f.question.toLowerCase().includes(text.split(" ")[0]));
-  if (fallback) return fallback.answer;
+  if(bestScore>0.15) return best.answer;
+  const fallback=faqsData.find(f=>f.question.toLowerCase().includes(text.split(" ")[0]));
+  if(fallback) return fallback.answer;
   return "🤔 I'm not sure about that. Try asking about jobs, qualifications, or training.";
 }
 
-/* Typing animation */
-function showTyping() {
-  const el = document.createElement("div");
+function showTyping(){
+  const el=document.createElement("div");
   el.classList.add("message","bot","typing");
-  el.textContent = "...";
+  el.textContent="...";
   chatMessages.appendChild(el);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  chatMessages.scrollTop=chatMessages.scrollHeight;
   return el;
 }
 
-/* Handle user send */
-function handleUserInput() {
-  const msg = userInput.value.trim();
-  if (!msg) return;
-  appendMessage("user", msg);
-  userInput.value = "";
+function handleUserInput(){
+  const msg=userInput.value.trim();
+  if(!msg)return;
+  appendMessage("user",msg);
+  userInput.value="";
   hideSuggestionDropdown();
-  const typing = showTyping();
-  setTimeout(() => {
+  const typing=showTyping();
+  setTimeout(()=>{
     typing.remove();
-    appendMessage("bot", findAnswer(msg));
-  }, 700);
+    appendMessage("bot",findAnswer(msg));
+  },700);
 }
 
-function clearChat() {
-  chatMessages.innerHTML = "";
-  appendMessage("bot", "🧹 Chat cleared. How can I help you again?");
+function clearChat(){
+  chatMessages.innerHTML="";
+  appendMessage("bot","🧹 Chat cleared. How can I help you again?");
 }
 
-/* ========== Live Suggestion Dropdown ========== */
+/* ---------- Live Suggestions ---------- */
 let suggestionDropdown;
-function createSuggestionDropdown() {
-  suggestionDropdown = document.createElement("div");
-  suggestionDropdown.className = "live-suggestions";
+function createSuggestionDropdown(){
+  suggestionDropdown=document.createElement("div");
+  suggestionDropdown.className="live-suggestions";
   document.querySelector(".chat-footer").appendChild(suggestionDropdown);
 }
-function showSuggestionDropdown(items) {
-  if (!suggestionDropdown) createSuggestionDropdown();
-  suggestionDropdown.innerHTML = "";
-  items.forEach(item => {
-    const b = document.createElement("div");
-    b.className = "live-suggestion";
-    b.textContent = item.question;
-    b.onclick = () => { userInput.value = item.question; hideSuggestionDropdown(); handleUserInput(); };
+function showSuggestionDropdown(items){
+  if(!suggestionDropdown) createSuggestionDropdown();
+  suggestionDropdown.innerHTML="";
+  items.forEach(item=>{
+    const b=document.createElement("div");
+    b.className="live-suggestion";
+    b.textContent=item.question;
+    b.onclick=()=>{userInput.value=item.question;hideSuggestionDropdown();handleUserInput();};
     suggestionDropdown.appendChild(b);
   });
-  suggestionDropdown.style.display = items.length ? "block" : "none";
+  suggestionDropdown.style.display=items.length?"block":"none";
 }
-function hideSuggestionDropdown() {
-  if (suggestionDropdown) suggestionDropdown.style.display = "none";
+function hideSuggestionDropdown(){
+  if(suggestionDropdown) suggestionDropdown.style.display="none";
 }
 
-/* Typing listener for both in-line and dropdown suggestions */
-userInput.addEventListener("input", e => {
-  const q = e.target.value.toLowerCase();
-  suggestionsBox.innerHTML = "";
-  if (!q) { hideSuggestionDropdown(); return; }
-
-  const matches = faqsData
-    .filter(f => f.question.toLowerCase().includes(q))
-    .slice(0,5);
-
-  // top bar chips
-  matches.forEach(f => {
-    const chip = document.createElement("button");
-    chip.className = "suggestion";
-    chip.textContent = f.question;
-    chip.onclick = () => { userInput.value = f.question; suggestionsBox.innerHTML=""; handleUserInput(); };
+userInput.addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase();
+  suggestionsBox.innerHTML="";
+  if(!q){hideSuggestionDropdown();return;}
+  const matches=faqsData.filter(f=>f.question.toLowerCase().includes(q)).slice(0,5);
+  matches.forEach(f=>{
+    const chip=document.createElement("button");
+    chip.className="suggestion";
+    chip.textContent=f.question;
+    chip.onclick=()=>{userInput.value=f.question;suggestionsBox.innerHTML="";handleUserInput();};
     suggestionsBox.appendChild(chip);
   });
-
-  // bottom dropdown
   showSuggestionDropdown(matches);
 });
 
-/* ========== Themes, dark mode, etc. ========== */
+/* ---------- Themes & Modes ---------- */
 function applyTheme(){
   const tMap={
     "Blue Gradient":["#007BFF","#00C6FF"],
@@ -157,7 +145,7 @@ darkToggle.addEventListener("change",e=>{
   document.documentElement.classList.toggle("dark",darkMode);
 });
 
-/* Menu + fullscreen */
+/* ---------- Menu & Fullscreen ---------- */
 menuBtn.addEventListener("click",e=>{
   e.stopPropagation();
   menuDropdown.classList.toggle("hidden");
@@ -174,13 +162,13 @@ exitFullscreenBtn.addEventListener("click",()=>{
   exitFullscreenBtn.classList.add("hidden");
 });
 
-/* Toggle open/close */
+/* ---------- Launch & Events ---------- */
 chatLauncher.addEventListener("click",()=>chatWrapper.classList.toggle("minimized"));
 sendBtn.addEventListener("click",handleUserInput);
 clearBtn.addEventListener("click",clearChat);
 userInput.addEventListener("keypress",e=>{if(e.key==="Enter")handleUserInput();});
 
-/* Startup */
+/* ---------- Init ---------- */
 window.addEventListener("load",()=>{
   applyTheme();
   appendMessage("bot","👋 Hello! I am your NextGen HR Assistant. How can I help you today?");
