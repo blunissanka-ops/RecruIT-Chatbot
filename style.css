@@ -1,4 +1,4 @@
-/* style.css (FIXED for UX/Overlap) */
+/* style.css (FIXED for Overlap and User Experience) */
 
 /* Base Styles */
 body {
@@ -55,10 +55,11 @@ body {
   content: '🤖'; /* The Robot Emoji */
 }
 
-/* Chat Box */
+/* Chat Box: Added padding-bottom to prevent suggestions from hiding content */
 .chat-box {
   flex: 1;
   padding: 15px;
+  padding-bottom: 20px; /* Ensure space for the suggestions list above the input */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -101,7 +102,6 @@ body {
   background: #f2f6fa; 
   border-top: 1px solid #ccc;
   gap: 8px; 
-  /* Ensure this container does not hide overflow, but its parent handles it */
 }
 
 /* Autocomplete Container: Takes full width and provides relative context */
@@ -118,21 +118,23 @@ body {
   padding: 10px;
   border-radius: 20px; 
   font-size: 14px;
-  /* Ensure the input sits on top of the suggestions when focused */
+  /* Resetting margin/padding to ensure proper alignment */
+  margin: 0;
+  box-sizing: border-box; 
   z-index: 110; 
 }
 
 /* Suggestions List: Positioned directly above the input */
 .suggestions-list {
   position: absolute;
-  /* CRITICAL FIX: The height of the input is about 40px. 
-     Positioning at 'bottom: 48px' places it cleanly above the input bar (40px + 8px gap). */
-  bottom: 48px; 
+  /* CRITICAL FIX: The height of the input is approx 40px, plus 10px padding from .input-container.
+     This calculation places it exactly at the top of the input field. */
+  bottom: 50px; /* 40px (input height) + 10px (input-container padding) = 50px */
   left: 0;
   right: 0;
   max-height: 180px; 
   overflow-y: auto;
-  z-index: 100; /* Must be below the chat box but above input field */
+  z-index: 100; 
   background: white;
   border: 1px solid #ccc;
   /* Rounded corners at the top only */
