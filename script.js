@@ -2,7 +2,7 @@ const chatBox = document.querySelector('.chat-box');
 const userInput = document.querySelector('#user-input');
 const sendBtn = document.querySelector('#send-btn');
 const clearBtn = document.querySelector('#clear-btn');
-const typingIndicator = document.querySelector('.typing-indicator'); // New element
+const typingIndicator = document.querySelector('.typing-indicator');
 
 let faqsData = [];
 let isFaqsLoaded = false;
@@ -20,8 +20,7 @@ function cleanText(text) {
 }
 
 function appendMessage(sender, text, isTyping = false) {
-  // The typing indicator is now a separate element handled by showTypingIndicator()
-  if (isTyping) return; 
+  if (isTyping) return;
 
   const msg = document.createElement('div');
   msg.classList.add('message', sender);
@@ -31,20 +30,19 @@ function appendMessage(sender, text, isTyping = false) {
 }
 
 function showTypingIndicator(show) {
-    if (show) {
-        typingIndicator.style.display = 'flex';
-    } else {
-        typingIndicator.style.display = 'none';
-    }
-    // Scroll to the bottom to show the indicator
-    chatBox.scrollTop = chatBox.scrollHeight;
+  if (show) {
+    typingIndicator.style.display = 'flex';
+  } else {
+    typingIndicator.style.display = 'none';
+  }
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // --- Chatbot Core Logic ---
 
 // Load FAQs asynchronously and handle UI state
 appendMessage('bot', '🤖 Initializing HR Chatbot. Please wait, loading knowledge base...');
-sendBtn.disabled = true; 
+sendBtn.disabled = true;
 
 fetch('faqs.json')
   .then(res => res.json())
@@ -52,13 +50,13 @@ fetch('faqs.json')
     faqsData = data.faqs.flatMap(cat => cat.questions);
     isFaqsLoaded = true;
     sendBtn.disabled = false;
-    
+
     // Remove initial loading message
     const loadingMessage = chatBox.querySelector('.bot p');
     if (loadingMessage && loadingMessage.textContent.includes('Initializing HR Chatbot')) {
       loadingMessage.closest('.message').remove();
     }
-    
+
     appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
   })
   .catch(err => {
@@ -66,15 +64,14 @@ fetch('faqs.json')
     appendMessage('bot', 'Error: Could not load FAQ data. Please check the faqs.json file.');
   });
 
-
 function findAnswer(userMessage) {
   if (!isFaqsLoaded) {
     return 'I am still loading the knowledge base. Please wait a moment before sending a message.';
   }
-  
+
   const cleanedMessage = cleanText(userMessage);
   // Filter out common, short words (like 'i', 'a', 'the')
-  const userWords = cleanedMessage.split(/\s+/).filter(word => word.length > 2); 
+  const userWords = cleanedMessage.split(/\s+/).filter(word => word.length > 2);
 
   // Step 1: Exact Match
   const exactMatch = faqsData.find(faq => cleanText(faq.question) === cleanedMessage);
@@ -86,16 +83,16 @@ function findAnswer(userMessage) {
 
   faqsData.forEach(faq => {
     let score = 0;
-    
+
     // Convert the FAQ keywords to a Set for O(1) lookups
     const faqKeywords = new Set(faq.keywords);
 
     // Score based on overlap between user words and FAQ keywords
     userWords.forEach(word => {
-        // Check if a word from the user's message is in the FAQ's keywords list
-        if (faqKeywords.has(word)) {
-            score++;
-        }
+      // Check if a word from the user's message is in the FAQ's keywords list
+      if (faqKeywords.has(word)) {
+        score++;
+      }
     });
 
     if (score > highestScore) {
@@ -105,7 +102,7 @@ function findAnswer(userMessage) {
     } else if (score === highestScore && score > 0) {
       // Tie-breaker: prefer the match with the shorter original question (implies higher specificity)
       if (bestMatch && faq.question.length < bestMatch.question.length) {
-         bestMatch = faq;
+        bestMatch = faq;
       } else if (!bestMatch) {
         bestMatch = faq; // Handle the first match if it ties
       }
@@ -118,6 +115,48 @@ function findAnswer(userMessage) {
 
   // Default fallback if score is too low or no match found
   return "I'm sorry, I couldn't find a direct answer to your question. Please try rephrasing or ask about common topics like 'jobs', 'application', 'benefits', or 'training'.";
+}
+
+// --- New Conversational Logic for Greetings and Common Phrases ---
+
+function handleGreetings(userMessage) {
+  const cleanedMessage = cleanText(userMessage);
+
+  // List of accepted greetings
+  const greetings = [
+    'hi', 'hello', 'hey', 'good morning', 'good afternoon', 'greetings'
+  ];
+  // List of goodbyes
+  const goodbye = [
+    'bye', 'goodbye', 'see ya', 'cya', 'later'
+  ];
+  // List of acknowledgements
+  const acknowledgement = [
+    'thank you', 'thanks', 'cheers'
+  ];
+
+  // Check for greetings
+  if (greetings.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
+    return 'Hello there! How can I assist you with HR matters today?';
+  }
+
+  // Check for goodbyes
+  if (goodbye.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
+    return 'Goodbye! Feel free to return if you have any other HR questions.';
+  }
+
+  // Check for acknowledgements
+  if (acknowledgement.some(a => cleanedMessage.includes(a))) {
+    return 'You are very welcome! Is there anything else I can help you with?';
+  }
+
+  // Check for common non-HR questions
+  if (cleanedMessage.includes('how are you')) {
+      return "I'm a bot, but I'm operating perfectly! How can I help you with your HR query?";
+  }
+  
+  // Return null if no conversational phrase is found, prompting the main FAQ search
+  return null;
 }
 
 // --- Event Handlers ---
@@ -135,7 +174,7 @@ clearBtn.addEventListener('click', () => {
   appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
 });
 
-// Send user message
+// Send user message (MODIFIED to include greeting check)
 function handleUserInput() {
   const userMessage = userInput.value.trim();
   if (!userMessage || !isFaqsLoaded) return; // Prevents sending if empty or not loaded
@@ -144,74 +183,25 @@ function handleUserInput() {
   appendMessage('user', userMessage);
   userInput.value = '';
 
-  // 2. Show typing indicator and disable button
+  // 2. Determine reply (Check for greetings first)
+  let reply = handleGreetings(userMessage);
+
+  // If not a greeting, proceed to the main FAQ search
+  if (reply === null) {
+    reply = findAnswer(userMessage);
+  }
+
+  // 3. Show typing indicator and disable button
   showTypingIndicator(true);
-  sendBtn.disabled = true; 
+  sendBtn.disabled = true;
 
-  // 3. Find answer and delay response
-  const reply = findAnswer(userMessage);
-
+  // 4. Find answer and delay response
   setTimeout(() => {
-    // 4. Hide typing indicator and enable send button
+    // 5. Hide typing indicator and enable send button
     showTypingIndicator(false);
     sendBtn.disabled = false;
 
-    // 5. Display bot reply
+    // 6. Display bot reply
     appendMessage('bot', reply);
   }, 800); // 800ms delay for a natural, human-like response time
-}
-// --- New Function: Handle Simple Greetings/Acknowlegements ---
-function handleGreetings(userMessage) {
-    const cleanedMessage = cleanText(userMessage);
-
-    // List of accepted greetings/acknowledgements
-    const greetings = [
-        'hi', 'hello', 'hey', 'good morning', 'good afternoon', 'greetings'
-    ];
-    const acknowledgement = [
-        'thank you', 'thanks', 'cheers'
-    ];
-
-    if (greetings.some(g => cleanedMessage.includes(g))) {
-        // Return a conversational response
-        return 'Hello there! How can I assist you with HR matters today?';
-    }
-
-    if (acknowledgement.some(a => cleanedMessage.includes(a))) {
-        // Return a conversational response
-        return 'You are very welcome! Is there anything else I can help you with?';
-    }
-
-    // Return null if no greeting or acknowledgement is found, prompting the main FAQ search
-    return null;
-}
-
-// ... existing functions (appendMessage, showTypingIndicator, etc.) ...
-
-// --- Modified handleUserInput Function ---
-function handleUserInput() {
-    const userMessage = userInput.value.trim();
-    if (!userMessage || !isFaqsLoaded) return;
-
-    appendMessage('user', userMessage);
-    userInput.value = '';
-
-    // Step 1: Check for simple greetings/acknowledgements first
-    let reply = handleGreetings(userMessage);
-    
-    // Step 2: If it's not a greeting, proceed to the main FAQ search
-    if (reply === null) {
-        reply = findAnswer(userMessage);
-    }
-    
-    // 3. Show typing indicator and disable button
-    showTypingIndicator(true);
-    sendBtn.disabled = true;
-
-    // 4. Delay response and display it
-    setTimeout(() => {
-        showTypingIndicator(false);
-        sendBtn.disabled = false;
-        appendMessage('bot', reply);
-    }, 800);
 }
