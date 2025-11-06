@@ -1,173 +1,109 @@
-let faqsData = [];
-let darkMode = false, theme = "Blue Gradient";
+let faqsData=[];
+let darkMode=false,theme="Blue Gradient";
+const chatWrapper=document.querySelector(".chat-wrapper");
+const chatWidget=document.querySelector(".chat-widget");
+const chatLauncher=document.querySelector("#chat-launcher");
+const chatMessages=document.querySelector(".chat-messages");
+const sendBtn=document.querySelector("#send-btn");
+const clearBtn=document.querySelector("#clear-btn");
+const userInput=document.querySelector("#user-input");
+const themeSelect=document.querySelector("#theme-select");
+const colorPicker=document.querySelector("#custom-color");
+const darkToggle=document.querySelector("#dark-toggle");
+const menuBtn=document.querySelector("#menu-btn");
+const menuDropdown=document.querySelector("#menu-dropdown");
+const suggestionsBox=document.querySelector(".suggestion-list");
 
-/* DOM elements */
-const chatWrapper = document.querySelector(".chat-wrapper");
-const chatWidget = document.querySelector(".chat-widget");
-const chatLauncher = document.querySelector("#chat-launcher");
-const chatMessages = document.querySelector(".chat-messages");
-const sendBtn = document.querySelector("#send-btn");
-const clearBtn = document.querySelector("#clear-btn");
-const userInput = document.querySelector("#user-input");
-const themeSelect = document.querySelector("#theme-select");
-const colorPicker = document.querySelector("#custom-color");
-const darkToggle = document.querySelector("#dark-toggle");
-const menuBtn = document.querySelector("#menu-btn");
-const menuDropdown = document.querySelector("#menu-dropdown");
-const fullscreenBtn = document.querySelector("#fullscreen-btn");
-const exitFullscreenBtn = document.querySelector("#exit-fullscreen-btn");
-const suggestionsBox = document.querySelector(".suggestion-list");
-
-/* ========== Load FAQ Data ========== */
+/* Load FAQs */
 fetch("faqs.json")
-  .then(r => r.json())
-  .then(d => {
-    faqsData = d;
-    appendMessage("bot", "✅ FAQs loaded successfully!");
-  })
-  .catch(() => appendMessage("bot", "⚠️ Unable to load FAQs. Please check the file."));
+ .then(r=>r.json())
+ .then(d=>{faqsData=d;appendMessage("bot","✅ FAQs loaded successfully!");})
+ .catch(()=>appendMessage("bot","⚠️ Unable to load FAQs. Run with Live Server."));
 
-/* ========== Message utilities ========== */
-function appendMessage(sender, text) {
-  const msg = document.createElement("div");
-  msg.classList.add("message", sender);
-  const t = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
-  msg.innerHTML = `<p>${text}</p><span class="meta">${t}</span>`;
-  chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+/* Messaging */
+function appendMessage(sender,text){
+ const div=document.createElement("div");
+ div.classList.add("message",sender);
+ const time=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+ div.innerHTML=`<p>${text}</p><span class="meta">${time}</span>`;
+ chatMessages.appendChild(div);
+ chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
-function cleanText(s) { return s.toLowerCase().replace(/[^a-z0-9\s]/g, ""); }
-
-function similarity(a, b) {
-  const A = cleanText(a).split(/\s+/), B = cleanText(b).split(/\s+/);
-  const inter = A.filter(x => B.includes(x));
-  return inter.length / Math.max(A.length, B.length);
+function cleanText(t){return t.toLowerCase().replace(/[^a-z0-9\s]/g,"");}
+function similarity(a,b){
+ const A=cleanText(a).split(/\s+/),B=cleanText(b).split(/\s+/);
+ const inter=A.filter(x=>B.includes(x));
+ return inter.length/Math.max(A.length,B.length);
 }
 
-/* ========== Core Answer Logic ========== */
-function findAnswer(msg) {
-  const text = cleanText(msg);
-
-  // greetings
-  const greetings = ["hi","hello","hey","good morning","good evening","good afternoon"];
-  if (greetings.some(g => text.includes(g)))
-    return "👋 Hello there! How can I assist you today? You can ask about jobs, application status, or training.";
-
-  // best match
-  let best = null, bestScore = 0;
-  faqsData.forEach(f => {
-    const combined = (f.question + " " + (f.keywords || []).join(" ")).toLowerCase();
-    const score = similarity(text, combined);
-    if (score > bestScore) { best = f; bestScore = score; }
-  });
-
-  if (best && bestScore > 0.1) return best.answer;
-
-  // partial keyword match
-  const partial = faqsData.find(f => f.keywords && f.keywords.some(k => text.includes(k.toLowerCase())));
-  if (partial) return partial.answer;
-
-  return "🤔 I’m not sure about that one. Try asking about applying, training, or interviews.";
+function findAnswer(msg){
+ const txt=cleanText(msg);
+ const greet=["hi","hello","hey"];
+ if(greet.some(g=>txt.includes(g)))return"👋 Hello there! Ask me about jobs, status or training.";
+ let best=null,bestScore=0;
+ faqsData.forEach(f=>{
+  const s=similarity(txt,(f.question+" "+(f.keywords||[]).join(" ")));
+  if(s>bestScore){bestScore=s;best=f;}
+ });
+ if(bestScore>0.1)return best.answer;
+ const partial=faqsData.find(f=>f.keywords&&f.keywords.some(k=>txt.includes(k)));
+ return partial?partial.answer:"🤔 Sorry, I don’t have info on that. Try 'apply' or 'training'.";
 }
 
-/* ========== Typing animation ========== */
-function showTyping() {
-  const el = document.createElement("div");
-  el.classList.add("message","bot","typing");
-  el.textContent = "...";
-  chatMessages.appendChild(el);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-  return el;
+function showTyping(){
+ const t=document.createElement("div");
+ t.classList.add("message","bot");t.textContent="...";
+ chatMessages.appendChild(t);
+ chatMessages.scrollTop=chatMessages.scrollHeight;
+ return t;
 }
 
-/* ========== Message handling ========== */
-function handleUserInput(inputText) {
-  const msg = (inputText || userInput.value).trim();
-  if (!msg) return;
-
-  appendMessage("user", msg);
-  userInput.value = "";
-  hideSuggestionDropdown();
-
-  const typing = showTyping();
-  setTimeout(() => {
-    typing.remove();
-    const answer = findAnswer(msg);
-    appendMessage("bot", answer);
-  }, 700);
+function handleUserInput(text){
+ const msg=text||userInput.value.trim();
+ if(!msg)return;
+ appendMessage("user",msg);userInput.value="";
+ hideDropdown();
+ const typing=showTyping();
+ setTimeout(()=>{typing.remove();appendMessage("bot",findAnswer(msg));},600);
 }
 
-sendBtn.addEventListener("click", () => handleUserInput());
-userInput.addEventListener("keypress", e => { if (e.key === "Enter") handleUserInput(); });
+/* Suggestions */
+let dropdown;
+function createDropdown(){
+ dropdown=document.createElement("div");
+ dropdown.className="live-suggestions";
+ document.querySelector(".chat-footer").appendChild(dropdown);
+}
+function showDropdown(items){
+ if(!dropdown)createDropdown();
+ dropdown.innerHTML="";
+ items.forEach(it=>{
+  const d=document.createElement("div");
+  d.className="live-suggestion";d.textContent=it.question;
+  d.onclick=()=>{hideDropdown();handleUserInput(it.question);};
+  dropdown.appendChild(d);
+ });
+ dropdown.style.display=items.length?"block":"none";
+}
+function hideDropdown(){if(dropdown)dropdown.style.display="none";}
 
-clearBtn.addEventListener("click", () => {
-  chatMessages.innerHTML = "";
-  appendMessage("bot", "🧹 Chat cleared. How can I help you again?");
+userInput.addEventListener("input",e=>{
+ const q=e.target.value.toLowerCase();
+ suggestionsBox.innerHTML="";
+ if(!q){hideDropdown();return;}
+ const m=faqsData.filter(f=>f.question.toLowerCase().includes(q)).slice(0,5);
+ m.forEach(f=>{
+  const b=document.createElement("button");
+  b.className="suggestion";b.textContent=f.question;
+  b.onclick=()=>{suggestionsBox.innerHTML="";handleUserInput(f.question);};
+  suggestionsBox.appendChild(b);
+ });
+ showDropdown(m);
 });
 
-/* ========== Suggestions ========== */
-let suggestionDropdown;
-function createSuggestionDropdown() {
-  suggestionDropdown = document.createElement("div");
-  suggestionDropdown.className = "live-suggestions";
-  document.querySelector(".chat-footer").appendChild(suggestionDropdown);
-}
-
-function showSuggestionDropdown(items) {
-  if (!suggestionDropdown) createSuggestionDropdown();
-  suggestionDropdown.innerHTML = "";
-  items.forEach(item => {
-    const b = document.createElement("div");
-    b.className = "live-suggestion";
-    b.textContent = item.question;
-    b.onclick = () => { hideSuggestionDropdown(); handleUserInput(item.question); };
-    suggestionDropdown.appendChild(b);
-  });
-  suggestionDropdown.style.display = items.length ? "block" : "none";
-}
-
-function hideSuggestionDropdown() {
-  if (suggestionDropdown) suggestionDropdown.style.display = "none";
-}
-
-/* Update suggestions while typing */
-userInput.addEventListener("input", e => {
-  const q = e.target.value.toLowerCase();
-  suggestionsBox.innerHTML = "";
-  if (!q) { hideSuggestionDropdown(); return; }
-
-  const matches = faqsData.filter(f => f.question.toLowerCase().includes(q)).slice(0,5);
-  matches.forEach(f => {
-    const chip = document.createElement("button");
-    chip.className = "suggestion";
-    chip.textContent = f.question;
-    chip.onclick = () => { suggestionsBox.innerHTML=""; handleUserInput(f.question); };
-    suggestionsBox.appendChild(chip);
-  });
-
-  showSuggestionDropdown(matches);
-});
-
-/* ========== Theme controls ========== */
+/* Theme + dark */
 function applyTheme(){
-  const tMap={"Blue Gradient":["#007BFF","#00C6FF"],"Purple Gradient":["#7b61ff","#c56fff"],"Mint Gradient":["#00C9A7","#92FE9D"],"Sunset Gradient":["#ff9966","#ff5e62"]};
-  const [c1,c2]=tMap[theme]||tMap["Blue Gradient"];
-  document.documentElement.style.setProperty("--primary-1",c1);
-  document.documentElement.style.setProperty("--primary-2",c2);
-}
-themeSelect.addEventListener("change",e=>{theme=e.target.value;applyTheme();});
-colorPicker.addEventListener("input",e=>{const c=e.target.value;document.documentElement.style.setProperty("--primary-1",c);document.documentElement.style.setProperty("--primary-2",c);});
-darkToggle.addEventListener("change",e=>{darkMode=e.target.checked;document.documentElement.classList.toggle("dark",darkMode);});
-
-/* ========== Menu & fullscreen ========== */
-menuBtn.addEventListener("click",e=>{e.stopPropagation();menuDropdown.classList.toggle("hidden");});
-document.addEventListener("click",()=>menuDropdown.classList.add("hidden"));
-fullscreenBtn.addEventListener("click",()=>{chatWidget.classList.add("fullscreen");fullscreenBtn.classList.add("hidden");exitFullscreenBtn.classList.remove("hidden");});
-exitFullscreenBtn.addEventListener("click",()=>{chatWidget.classList.remove("fullscreen");fullscreenBtn.classList.remove("hidden");exitFullscreenBtn.classList.add("hidden");});
-
-/* ========== Minimize launcher ========== */
-chatLauncher.addEventListener("click",()=>chatWrapper.classList.toggle("minimized"));
-
-/* Startup greeting */
-window.addEventListener("load",()=>{applyTheme();appendMessage("bot","👋 Hello! I am your NextGen HR Assistant. How can I help you today?");});
+ const map={"Blue Gradient":["#007BFF","#00C6FF"],"Purple Gradient":["#7b61ff","#c56fff"],"Mint Gradient":["#00C9A7","#92FE9D"],"Sunset Gradient":["#ff9966","#ff5e62"]};
+ const [c1,c2]=map[theme]||map["Blue Gradient"];
+ document.documentE
