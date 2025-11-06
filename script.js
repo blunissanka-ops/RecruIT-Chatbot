@@ -1,6 +1,6 @@
 let faqsData = [];
 let darkMode = false;
-let theme = 'Purple Gradient';
+let theme = 'Sunset Gradient';
 
 const chatMessages = document.querySelector('.chat-messages');
 const sendBtn = document.querySelector('#send-btn');
@@ -15,11 +15,13 @@ const chatWrapper = document.querySelector('.chat-wrapper');
 const chatLauncher = document.querySelector('#chat-launcher');
 const suggestionsBox = document.querySelector('.suggestion-list');
 
+/* ---------- Load FAQs ---------- */
 fetch('faqs.json')
   .then(res => res.json())
-  .then(data => faqsData = data)
+  .then(data => (faqsData = data))
   .catch(() => appendMessage('bot', '⚠️ Could not load FAQs.'));
 
+/* ---------- Utilities ---------- */
 function appendMessage(sender, text) {
   const msg = document.createElement('div');
   msg.classList.add('message', sender);
@@ -40,31 +42,34 @@ function similarity(a, b) {
   return common.length / Math.max(aWords.length, bWords.length);
 }
 
+/* ---------- Core Answer Finder ---------- */
 function findAnswer(userMsg) {
-  let best = null, bestScore = 0;
+  const cleaned = cleanText(userMsg);
+  let best = null,
+    bestScore = 0;
+
   for (const faq of faqsData) {
-    const score = similarity(userMsg, faq.question + ' ' + faq.keywords.join(' '));
+    const combined = faq.question + ' ' + faq.keywords.join(' ');
+    const score = similarity(cleaned, combined);
     if (score > bestScore) {
       best = faq;
       bestScore = score;
     }
   }
+
+  // Partial match fallback (for one-word queries)
+  if (!best || bestScore < 0.15) {
+    const fallback = faqsData.find(f =>
+      f.question.toLowerCase().includes(cleaned.split(' ')[0])
+    );
+    if (fallback) return fallback.answer;
+  }
+
   if (best && bestScore > 0.15) return best.answer;
   return "🤔 I’m not sure about that. Try asking about jobs, qualifications, or training.";
 }
 
-function handleUserInput() {
-  const msg = userInput.value.trim();
-  if (!msg) return;
-  appendMessage('user', msg);
-  userInput.value = '';
-  const typing = showTyping();
-  setTimeout(() => {
-    typing.remove();
-    appendMessage('bot', findAnswer(msg));
-  }, 500);
-}
-
+/* ---------- Typing animation ---------- */
 function showTyping() {
   const el = document.createElement('div');
   el.classList.add('message', 'bot');
@@ -74,51 +79,45 @@ function showTyping() {
   return el;
 }
 
+/* ---------- Message sending ---------- */
+function handleUserInput() {
+  const msg = userInput.value.trim();
+  if (!msg) return;
+  appendMessage('user', msg);
+  userInput.value = '';
+  suggestionsBox.innerHTML = '';
+
+  const typing = showTyping();
+  setTimeout(() => {
+    typing.remove();
+    const reply = findAnswer(msg);
+    appendMessage('bot', reply);
+  }, 800);
+}
+
+/* ---------- Clear chat ---------- */
+function clearChat() {
+  chatMessages.innerHTML = '';
+  suggestionsBox.innerHTML = '';
+  appendMessage('bot', '🧹 Chat cleared. How can I help you again?');
+}
+
+/* ---------- Event Listeners ---------- */
 sendBtn.addEventListener('click', handleUserInput);
+clearBtn.addEventListener('click', clearChat);
 userInput.addEventListener('keypress', e => {
   if (e.key === 'Enter') handleUserInput();
 });
-clearBtn.addEventListener('click', () => {
-  chatMessages.innerHTML = '';
-  appendMessage('bot', '🧹 Chat cleared. Ask me something new!');
-});
 
-themeSelect.addEventListener('change', e => {
-  theme = e.target.value;
-  applyTheme();
-});
-colorPicker.addEventListener('input', e => {
-  const color = e.target.value;
-  document.documentElement.style.setProperty('--primary-1', color);
-  document.documentElement.style.setProperty('--primary-2', color);
-});
-darkToggle.addEventListener('change', e => {
-  darkMode = e.target.checked;
-  document.documentElement.classList.toggle('dark', darkMode);
-});
-
-function applyTheme() {
-  const themes = {
-    'Blue Gradient': ['#007BFF', '#00C6FF'],
-    'Purple Gradient': ['#7b61ff', '#c56fff'],
-    'Mint Gradient': ['#00C9A7', '#92FE9D'],
-    'Sunset Gradient': ['#ff9966', '#ff5e62']
-  };
-  const [c1, c2] = themes[theme] || themes['Blue Gradient'];
-  document.documentElement.style.setProperty('--primary-1', c1);
-  document.documentElement.style.setProperty('--primary-2', c2);
-}
-
-minimizeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
-closeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
-chatLauncher.addEventListener('click', () => chatWrapper.classList.remove('minimized'));
-
+/* ---------- Suggestion System ---------- */
 userInput.addEventListener('input', e => {
   const query = e.target.value.toLowerCase();
-  if (!query) return suggestionsBox.innerHTML = '';
+  if (!query) return (suggestionsBox.innerHTML = '');
+
   const matches = faqsData
     .filter(f => f.question.toLowerCase().includes(query))
     .slice(0, 5);
+
   suggestionsBox.innerHTML = '';
   matches.forEach(faq => {
     const btn = document.createElement('button');
@@ -133,7 +132,42 @@ userInput.addEventListener('input', e => {
   });
 });
 
+/* ---------- Theme and Color ---------- */
+function applyTheme() {
+  const themes = {
+    'Blue Gradient': ['#007BFF', '#00C6FF'],
+    'Purple Gradient': ['#7b61ff', '#c56fff'],
+    'Mint Gradient': ['#00C9A7', '#92FE9D'],
+    'Sunset Gradient': ['#ff9966', '#ff5e62'],
+  };
+  const [c1, c2] = themes[theme] || themes['Blue Gradient'];
+  document.documentElement.style.setProperty('--primary-1', c1);
+  document.documentElement.style.setProperty('--primary-2', c2);
+}
+
+themeSelect.addEventListener('change', e => {
+  theme = e.target.value;
+  applyTheme();
+});
+
+colorPicker.addEventListener('input', e => {
+  const color = e.target.value;
+  document.documentElement.style.setProperty('--primary-1', color);
+  document.documentElement.style.setProperty('--primary-2', color);
+});
+
+darkToggle.addEventListener('change', e => {
+  darkMode = e.target.checked;
+  document.documentElement.classList.toggle('dark', darkMode);
+});
+
+/* ---------- Minimize/Maximize ---------- */
+minimizeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
+closeBtn.addEventListener('click', () => chatWrapper.classList.add('minimized'));
+chatLauncher.addEventListener('click', () => chatWrapper.classList.remove('minimized'));
+
+/* ---------- Initialization ---------- */
 window.addEventListener('load', () => {
   applyTheme();
-  appendMessage('bot', "👋 Hello! I am your NextGen HR Assistant. How can I help you today?");
+  appendMessage('bot', '👋 Hello! I am your NextGen HR Assistant. How can I help you today?');
 });
