@@ -1,3 +1,4 @@
+// --- DOM Elements ---
 const chatBox = document.querySelector('.chat-box');
 const userInput = document.querySelector('#user-input');
 const sendBtn = document.querySelector('#send-btn');
@@ -5,189 +6,106 @@ const clearBtn = document.querySelector('#clear-btn');
 const typingIndicator = document.querySelector('.typing-indicator');
 
 let faqsData = [];
-let isFaqsLoaded = false;
-const SCORE_THRESHOLD = 3; // Minimum score for a confident multi-word answer
+let isLoaded = false;
 
 // --- Utility Functions ---
-
-function cleanText(text) {
-  // Clean text: lowercase + remove punctuation
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .trim();
+function cleanText(txt) {
+  return txt.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
 }
-
-function appendMessage(sender, text, isTyping = false) {
-  if (isTyping) return;
-
+function timestamp() {
+  return new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+}
+function appendMessage(sender, text) {
   const msg = document.createElement('div');
   msg.classList.add('message', sender);
-  msg.innerHTML = `<p>${text}</p>`;
+  msg.innerHTML = `<p>${text}</p><span class="timestamp">${timestamp()}</span>`;
   chatBox.appendChild(msg);
   chatBox.scrollTop = chatBox.scrollHeight;
+  saveChat();
 }
-
-function showTypingIndicator(show) {
-  if (show) {
-    typingIndicator.style.display = 'flex';
-  } else {
-    typingIndicator.style.display = 'none';
-  }
-  // This ensures the typing indicator is visible at the bottom
+function showTyping(show) {
+  typingIndicator.style.display = show ? 'flex' : 'none';
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+function saveChat() {
+  localStorage.setItem('chatHistory', chatBox.innerHTML);
+}
+function loadChat() {
+  const saved = localStorage.getItem('chatHistory');
+  if (saved) chatBox.innerHTML = saved;
+}
 
-// --- Chatbot Core Logic ---
+// --- Fuzzy Similarity Search ---
+function similarity(a, b) {
+  const A = new Set(cleanText(a).split(/\s+/));
+  const B = new Set(cleanText(b).split(/\s+/));
+  const intersect = new Set([...A].filter(x => B.has(x)));
+  return intersect.size / Math.sqrt(A.size * B.size);
+}
 
-// Load FAQs asynchronously and handle UI state
-appendMessage('bot', '🤖 Initializing HR Chatbot. Please wait, loading knowledge base...');
+// --- Greeting Logic ---
+function handleGreeting(msg) {
+  const t = cleanText(msg);
+  if (['hi','hello','hey','good morning','good afternoon'].some(w=>t.includes(w))) return "Hello! How can I assist you with HR matters today?";
+  if (['thank','thanks'].some(w=>t.includes(w))) return "You're very welcome! Anything else I can help you with?";
+  if (['bye','goodbye','see you'].some(w=>t.includes(w))) return "Goodbye! Have a great day ahead.";
+  if (t.includes('how are you')) return "I'm fully operational! How can I support your HR query?";
+  return null;
+}
+
+// --- Find Best Answer ---
+function findAnswer(msg) {
+  const t = cleanText(msg);
+  let best = null, bestScore = 0;
+  faqsData.forEach(faq => {
+    const combined = faq.question + ' ' + faq.keywords.join(' ');
+    const score = similarity(t, combined);
+    if (score > bestScore) { bestScore = score; best = faq; }
+  });
+  if (best && bestScore > 0.25) return best.answer;
+  return "I'm sorry, I couldn’t find an exact answer. Please try rephrasing or ask about 'applications', 'training', or 'policies'.";
+}
+
+// --- Load FAQs ---
+appendMessage('bot', '🤖 Initializing HR Chatbot... please wait.');
 sendBtn.disabled = true;
 
 fetch('faqs.json')
   .then(res => res.json())
   .then(data => {
-    faqsData = data.faqs.flatMap(cat => cat.questions);
-    isFaqsLoaded = true;
+    faqsData = data.faqs.flatMap(c => c.questions);
+    isLoaded = true;
     sendBtn.disabled = false;
-
-    // Remove initial loading message
-    const loadingMessage = chatBox.querySelector('.bot p');
-    if (loadingMessage && loadingMessage.textContent.includes('Initializing HR Chatbot')) {
-      loadingMessage.closest('.message').remove();
-    }
-
+    chatBox.innerHTML = ''; // clear init message
     appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
   })
-  .catch(err => {
-    console.error('Error loading FAQs:', err);
-    appendMessage('bot', 'Error: Could not load FAQ data. Please check the faqs.json file.');
-  });
+  .catch(() => appendMessage('bot', '⚠️ Error: Could not load FAQs. Please ensure faqs.json is available.'));
 
-function findAnswer(userMessage) {
-  if (!isFaqsLoaded) {
-    return 'I am still loading the knowledge base. Please wait a moment before sending a message.';
-  }
-
-  const cleanedMessage = cleanText(userMessage);
-  // Filter out common, short words (like 'i', 'a', 'the')
-  const userWords = cleanedMessage.split(/\s+/).filter(word => word.length > 2);
-
-  // Step 1: Exact Match
-  const exactMatch = faqsData.find(faq => cleanText(faq.question) === cleanedMessage);
-  if (exactMatch) return exactMatch.answer;
-
-  // Step 2: Keyword-based matching
-  let bestMatch = null;
-  let highestScore = 0;
-
-  faqsData.forEach(faq => {
-    let score = 0;
-    const faqKeywords = new Set(faq.keywords);
-
-    // Score based on overlap between user words and FAQ keywords
-    userWords.forEach(word => {
-      if (faqKeywords.has(word)) {
-        score++;
-      }
-    });
-
-    if (score > highestScore) {
-      highestScore = score;
-      bestMatch = faq;
-    } else if (score === highestScore && score > 0) {
-      // Tie-breaker
-      if (bestMatch && faq.question.length < bestMatch.question.length) {
-        bestMatch = faq;
-      } else if (!bestMatch) {
-        bestMatch = faq;
-      }
-    }
-  });
-
-  const isSingleWordQuery = userWords.length === 1;
-
-  if (bestMatch) {
-    // If it's a single word query (e.g., 'jobs'), accept a score of 1 or more.
-    if (isSingleWordQuery && highestScore >= 1) {
-        return bestMatch.answer;
-    }
-    // Standard threshold for multi-word phrases/sentences
-    if (highestScore >= SCORE_THRESHOLD) {
-        return bestMatch.answer;
-    }
-  }
-
-  // Default fallback
-  return "I'm sorry, I couldn't find a direct answer to your question. Please try rephrasing or ask about common topics like 'jobs', 'application', 'benefits', or 'training'.";
-}
-
-// --- Conversational Logic (Fixes 'hi', 'thanks' failures) ---
-
-function handleGreetings(userMessage) {
-  const cleanedMessage = cleanText(userMessage);
-
-  const greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'greetings'];
-  const goodbye = ['bye', 'goodbye', 'see ya', 'cya', 'later'];
-  const acknowledgement = ['thank you', 'thanks', 'cheers'];
-
-  if (greetings.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
-    return 'Hello there! How can I assist you with HR matters today?';
-  }
-
-  if (goodbye.some(g => cleanedMessage === g || cleanedMessage.includes(g))) {
-    return 'Goodbye! Feel free to return if you have any other HR questions.';
-  }
-
-  if (acknowledgement.some(a => cleanedMessage.includes(a))) {
-    return 'You are very welcome! Is there anything else I can help you with?';
-  }
-
-  if (cleanedMessage.includes('how are you')) {
-      return "I'm a bot, but I'm operating perfectly! How can I help you with your HR query?";
-  }
-  
-  return null;
-}
-
-// --- Event Handlers ---
-
-sendBtn.addEventListener('click', handleUserInput);
-userInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') handleUserInput();
-});
-
+// --- Event Listeners ---
+sendBtn.addEventListener('click', handleInput);
+userInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleInput(); });
 clearBtn.addEventListener('click', () => {
+  localStorage.removeItem('chatHistory');
   chatBox.innerHTML = '';
-  appendMessage('bot', 'Hello! I am your NextGen HR Assistant. How can I help you today?');
+  appendMessage('bot', 'Chat cleared. How can I help you today?');
 });
 
-function handleUserInput() {
-  const userMessage = userInput.value.trim();
-  if (!userMessage || !isFaqsLoaded) return; 
-
-  // 1. Display user message
-  appendMessage('user', userMessage);
+function handleInput() {
+  const msg = userInput.value.trim();
+  if (!msg || !isLoaded) return;
+  appendMessage('user', msg);
   userInput.value = '';
+  let reply = handleGreeting(msg) || findAnswer(msg);
 
-  // 2. Determine reply (Check for greetings first)
-  let reply = handleGreetings(userMessage);
-
-  if (reply === null) {
-    reply = findAnswer(userMessage);
-  }
-
-  // 3. Show typing indicator and disable button
-  showTypingIndicator(true);
+  showTyping(true);
   sendBtn.disabled = true;
 
-  // 4. Delay response for UX
   setTimeout(() => {
-    // 5. Hide typing indicator and enable send button
-    showTypingIndicator(false);
+    showTyping(false);
     sendBtn.disabled = false;
-
-    // 6. Display bot reply
     appendMessage('bot', reply);
-  }, 800); 
+  }, 700);
 }
+
+// --- Load saved history on start ---
+window.addEventListener('load', loadChat);
