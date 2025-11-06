@@ -33,26 +33,28 @@ function appendMessage(sender,text){
   chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
-/* Clean text */
+/* Utility */
 function cleanText(str){return str.toLowerCase().replace(/[^a-z0-9\s]/g,'');}
-
-/* Similarity */
 function similarity(a,b){
   const A=cleanText(a).split(/\s+/),B=cleanText(b).split(/\s+/);
   const inter=A.filter(x=>B.includes(x));
   return inter.length/Math.max(A.length,B.length);
 }
 
-/* Find answer */
+/* Answer finder with greetings */
 function findAnswer(msg){
-  const cleaned=cleanText(msg);
+  const text=cleanText(msg);
+  const greetings=['hi','hello','hey','good morning','good evening','good afternoon'];
+  if(greetings.some(g=>text.includes(g)))
+    return "👋 Hello there! How can I assist you today? You can ask about jobs, application status, or training.";
+
   let best=null,bestScore=0;
   faqsData.forEach(f=>{
-    const score=similarity(cleaned,f.question+' '+f.keywords.join(' '));
+    const score=similarity(text,f.question+' '+f.keywords.join(' '));
     if(score>bestScore){best=f;bestScore=score;}
   });
   if(bestScore>0.15) return best.answer;
-  const fallback=faqsData.find(f=>f.question.toLowerCase().includes(cleaned.split(' ')[0]));
+  const fallback=faqsData.find(f=>f.question.toLowerCase().includes(text.split(' ')[0]));
   if(fallback) return fallback.answer;
   return "🤔 I'm not sure about that. Try asking about jobs, qualifications, or training.";
 }
@@ -67,7 +69,7 @@ function showTyping(){
   return el;
 }
 
-/* Handle input */
+/* Handle user message */
 function handleUserInput(){
   const msg=userInput.value.trim();
   if(!msg)return;
@@ -95,7 +97,8 @@ userInput.addEventListener('input',e=>{
   suggestionsBox.innerHTML='';
   matches.forEach(f=>{
     const b=document.createElement('button');
-    b.className='suggestion';b.textContent=f.question;
+    b.className='suggestion';
+    b.textContent=f.question;
     b.onclick=()=>{userInput.value=f.question;suggestionsBox.innerHTML='';handleUserInput();};
     suggestionsBox.appendChild(b);
   });
@@ -124,14 +127,12 @@ darkToggle.addEventListener('change',e=>{
   document.documentElement.classList.toggle('dark',darkMode);
 });
 
-/* Menu dropdown */
+/* Menu + fullscreen */
 menuBtn.addEventListener('click',e=>{
   e.stopPropagation();
   menuDropdown.classList.toggle('hidden');
 });
 document.addEventListener('click',()=>menuDropdown.classList.add('hidden'));
-
-/* Fullscreen */
 fullscreenBtn.addEventListener('click',()=>{
   chatWidget.classList.add('fullscreen');
   fullscreenBtn.classList.add('hidden');
@@ -143,7 +144,7 @@ exitFullscreenBtn.addEventListener('click',()=>{
   exitFullscreenBtn.classList.add('hidden');
 });
 
-/* Launcher toggle */
+/* Toggle open/close */
 chatLauncher.addEventListener('click',()=>chatWrapper.classList.toggle('minimized'));
 
 /* Buttons */
