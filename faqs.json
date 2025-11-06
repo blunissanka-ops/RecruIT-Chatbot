@@ -85,11 +85,11 @@
         },
         {
           "question": "Can I request detailed feedback on my interview performance?",
-          "answer": "Yes, you may request feedback by replying to your interview confirmation email or contacting the HR Recruitment Team through the careers portal.",
+          "answer": "Yes, you may request feedback by replying to your interview confirmation email or contacting the HR Recruitment Team through the careers portal. Feedback is provided where possible to help candidates improve for future opportunities.",
           "keywords": ["feedback", "interview", "performance", "request"]
         },
         {
-          "question": "My application has been under review for a long time. What does that mean?",
+          "question": "My application has been “Under Review” for a long time. What does that mean?",
           "answer": "‘Under Review’ means your application is still being evaluated by our recruitment team or the hiring manager. Sometimes, reviews take longer due to a high volume of applications or internal discussions.",
           "keywords": ["under review", "status", "application"]
         },
@@ -115,7 +115,7 @@
         },
         {
           "question": "How will the interview be conducted – online or face-to-face?",
-          "answer": "We usually conduct the first round online (via Google Meet or MS Teams). The final round is generally held on-site at our Colombo office.",
+          "answer": "We usually conduct the first round online (via Google Meet or MS Teams). The final round is generally held on-site at our Colombo office. The interview type will be clearly mentioned in your invitation.",
           "keywords": ["interview", "online", "face-to-face", "conducted"]
         },
         {
@@ -130,7 +130,7 @@
         },
         {
           "question": "Who will conduct my interview and how long will it take?",
-          "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role.",
+          "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role. You will be informed of the exact time and interviewer details in advance.",
           "keywords": ["interview", "panel", "duration", "time"]
         }
       ]
@@ -140,8 +140,28 @@
       "questions": [
         {
           "question": "Can you tell me how the internal mobility process works at NextGen Systems?",
-          "answer": "Use the Employee Portal to submit internal applications. The hiring manager and HR review it, then you may get an interview. HR arranges the transfer once approved.",
-          "keywords": ["internal", "mobility", "transfer", "department", "project"]
+          "answer": "We have an easy-to-understand internal mobility process. This is how it operates: 1. Use the Employee Portal to look for open internal positions. 2. For the job you're interested in, submit an internal application. 3. The hiring manager and HR will assess your application. 4. You will receive an invitation to an interview or conversation if you are selected. 5. HR will arrange the transfer with your new department and present team once it has been approved. You can speak with your supervisor or HRBP directly about your interest in project transfers within the same department.",
+          "keywords": ["internal", "mobility", "transfer", "department", "project", "portal"]
+        },
+        {
+          "question": "What are the qualifying conditions for requesting job opportunities internally at NextGen Systems?",
+          "answer": "If your current role has lasted at least six (6) months, you have a satisfactory performance history, and your immediate supervisor approves, you may apply for internal vacancies. Some positions may require certain skills and/or certification; those requirements will be specified in the advertisement for the vacancy.",
+          "keywords": ["internal", "qualifications", "conditions", "supervisor", "performance", "vacancies"]
+        },
+        {
+          "question": "How do I search and apply for existing internal job opportunities within the areas of software development, and other automation work?",
+          "answer": "The NextGen Employee Portal → Careers Section allows you to view all open internal positions. Just click 'Apply Internally,' upload your most recent resume, and submit the application if you've found a position that interests you. If your profile fits the standards, our recruitment staff will get in touch with you after you receive an email confirmation.",
+          "keywords": ["search", "apply", "internal", "software", "automation", "portal", "resume"]
+        },
+        {
+          "question": "Does the organization have pathways available for internal promotions; for example, from junior developer to senior developer or specialist?",
+          "answer": "Indeed, we do! A systematic path from Junior → Intermediate → Senior → Lead roles is outlined in NextGen Systems' organized Career Development Framework. Depending on your performance, abilities, and development objectives, we can assist migrations into specialized fields like cloud solutions, automation architecture, DevOps, and AI engineering.",
+          "keywords": ["promotions", "junior", "senior", "lead", "specialist", "developer", "career", "framework"]
+        },
+        {
+          "question": "What formal training or upskilling programs does the organization offer to employees if they want to learn new technologies as part of their organization career; for example, AI, machine learning, data analytics cloud computing?",
+          "answer": "We provide a range of possibilities for upskilling, such as: Internal workshops conducted by our knowledgeable engineers, Online learning modules on AI, Data Science, Cloud, and Cybersecurity, Certification support programs (AWS, Azure, Google Cloud, Scrum, etc.), Project-based learning, which allows you to work on actual projects to obtain practical experience. The Learning & Development Portal allows you to investigate these at any moment.",
+          "keywords": ["training", "upskilling", "programs", "technologies", "ai", "machine learning", "data analytics", "cloud computing", "certification"]
         }
       ]
     }
