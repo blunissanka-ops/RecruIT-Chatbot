@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NextGen Systems HR Chatbot</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,21 +13,24 @@
   <div class="chat-container">
     <div class="chat-header">
       <div class="bot-avatar"></div> 
-      NextGen HR Assistant
+      <span class="header-title">NextGen HR Assistant</span>
       
       <div class="kebab-menu">
-        <button id="menu-btn" aria-label="Options Menu">...</button>
+        <button id="menu-btn" aria-label="Options Menu">
+          <i class="fas fa-ellipsis-v"></i> </button>
         <div id="options-dropdown" class="options-dropdown">
           
-          <div class="dropdown-section-title">Theme Select</div>
+          <div class="dropdown-section-title">✨ Select Theme</div>
           <div class="theme-options">
-            <button class="theme-option" data-theme="default">Blue Wave</button>
-            <button class="theme-option" data-theme="sunset">Sunset Glow</button>
-            <button class="theme-option" data-theme="emerald">Emerald Sea</button>
+            <button class="theme-option theme-default" data-theme="default">Blue Wave</button>
+            <button class="theme-option theme-sunset" data-theme="sunset">Sunset Glow</button>
+            <button class="theme-option theme-emerald" data-theme="emerald">Emerald Sea</button>
           </div>
           
-          <div class="dropdown-section-title">View Options</div>
-          <button id="toggle-size-btn" class="menu-item">Toggle Fullscreen</button>
+          <div class="dropdown-section-title">💻 View Options</div>
+          <button id="toggle-size-btn" class="menu-item">
+            <i class="fas fa-expand-alt"></i> <span>Toggle Fullscreen</span>
+          </button>
           
         </div>
       </div>
