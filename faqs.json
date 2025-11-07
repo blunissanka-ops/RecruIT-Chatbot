@@ -1,37 +1,37 @@
 {
-  "FAQs": [
+  "faqs": [
     {
       "category": "Applying for Jobs",
       "questions": [
         {
           "question": "How can I apply for a job at NextGen Systems?",
-          "answer": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking 'Apply Now'. Once you submit your CV and details, our recruitment team will review your application and contact you if you are shortlisted.",
-          "keywords": ["apply", "job application", "career page", "submit cv", "apply now", "how to apply", "application process"]
+          "answer": "You can apply directly through our Careers Page by selecting the role you’re interested in and clicking “Apply Now”. Once you submit your CV and details, our recruitment team will review your application and contact you if you are shortlisted.",
+          "keywords": ["apply", "application", "career", "job", "page", "submit", "cv", "resume", "shortlisted"]
         },
         {
           "question": "Can I apply for more than one position at the same time?",
           "answer": "Absolutely! If you feel you’re suitable for multiple roles, you’re welcome to apply for more than one. Just make sure each application matches your skills and experience.",
-          "keywords": ["multiple positions", "apply for more than one", "several jobs", "multiple applications", "job roles"]
+          "keywords": ["apply", "multiple", "positions", "roles", "simultaneously", "job"]
         },
         {
           "question": "What documents do I need to submit with my application?",
-          "answer": "You will need to upload your updated CV. We also encourage you to include a cover letter and links to your portfolio or LinkedIn profile, especially for technical roles.",
-          "keywords": ["required documents", "cv", "resume", "cover letter", "portfolio", "linkedin", "application attachments"]
+          "answer": "You will need to upload your updated CV. We also encourage you to include a cover letter and links to your portfolio, LinkedIn profile (if available), especially for technical roles.",
+          "keywords": ["documents", "submit", "upload", "cv", "resume", "cover letter", "portfolio", "linkedin"]
         },
         {
           "question": "How will I know if my application was received?",
           "answer": "Once your application is successfully submitted, you will receive an email confirmation. You may also receive a message from RecruIT acknowledging your submission.",
-          "keywords": ["application confirmation", "submission", "email confirmation", "acknowledgment", "received application"]
+          "keywords": ["received", "confirmation", "application", "email", "recruitment", "submit"]
         },
         {
           "question": "Can I apply if I don’t have previous IT industry experience?",
-          "answer": "Yes! We welcome applications from fresh graduates and candidates from different industries. If you have passion, willingness to learn, and basic relevant skills, we encourage you to apply.",
-          "keywords": ["no experience", "fresh graduate", "career change", "entry level", "beginner", "apply without experience"]
+          "answer": "Yes! We welcome applications from fresh graduates and candidates from different industries. If you have passion, willingness to learn, and basic relevant skills, we encourage you to apply. Some roles are specifically designed for entry-level applicants.",
+          "keywords": ["experience", "fresh", "graduate", "industry", "entry level", "it", "apply"]
         },
         {
           "question": "Do I need a degree to apply for a position?",
-          "answer": "A degree is beneficial, but not mandatory for all roles. We value skills, practical experience, problem-solving ability, and creativity.",
-          "keywords": ["degree requirement", "qualification", "education", "no degree", "skills", "experience", "eligibility"]
+          "answer": "A degree is beneficial, but not mandatory for all roles. We value skills, practical experience, problem-solving ability, and creativity. If you don’t have a degree but have strong project experience, certifications, or a solid portfolio, we’d still love to hear from you.",
+          "keywords": ["degree", "education", "qualification", "mandatory", "certifications", "portfolio", "apply"]
         }
       ]
     },
@@ -40,28 +40,28 @@
       "questions": [
         {
           "question": "What are the basic qualifications needed to apply for a position in your company?",
-          "answer": "To apply for any position, you should have at least the educational background and experience mentioned in the job ad. For entry-level roles, a diploma or degree is typically required.",
-          "keywords": ["qualifications", "basic requirements", "eligibility", "education", "minimum qualification"]
+          "answer": "To apply for any position at our company, you should have at least the educational background and experience represented in the job advertisement. Generally, for starter level roles, a diploma or degree in the related field is needed. Some technical roles may also require specific qualifications or training.",
+          "keywords": ["basic", "qualifications", "needed", "apply", "education", "experience", "starter", "diploma", "degree"]
         },
         {
           "question": "Are there any age or experience limits for applying to jobs?",
-          "answer": "No age requirement, but some roles require experience — senior positions need 3–5 years, while internships are open to new graduates.",
-          "keywords": ["age limit", "experience requirement", "eligibility", "work experience", "senior roles", "internship"]
+          "answer": "No, there isn’t an exact age requirement to apply for the job. But some positions do require a certain time period of experience. For example, senior roles usually require 3-5 years of work experience, while internships or junior positions are available for new graduates.",
+          "keywords": ["age", "experience", "limits", "requirement", "senior", "junior", "internships"]
         },
         {
           "question": "How can I know if I meet the qualifications for a particular job?",
-          "answer": "Each job posting includes qualifications, skills, and experience details. If you meet most requirements, you can apply.",
-          "keywords": ["meet qualifications", "eligibility check", "job match", "skills", "requirements"]
+          "answer": "Each job posting includes a detailed list of required qualifications, skills and experience. Before applying, you can compare your educational background and work experience with those mentioned in the job description. If you meet most of the listed requirements, you’re suitable to apply for the job.",
+          "keywords": ["meet", "qualifications", "skills", "experience", "requirements", "job posting", "suitable"]
         },
         {
           "question": "Are professional qualifications required?",
-          "answer": "Not always! Certifications like CIMA, ACCA, PMP, and HRM Diplomas are an advantage but not mandatory unless stated.",
-          "keywords": ["professional qualification", "certification", "CIMA", "ACCA", "PMP", "HRM diploma"]
+          "answer": "Not always! Certification like CIMA, ACCA, PMP and HRM Diplomas are considered an advantage but not a requirement unless mentioned otherwise in the job description.",
+          "keywords": ["professional", "qualifications", "required", "cima", "acca", "pmp", "hrm", "diplomas", "certification"]
         },
         {
-          "question": "Does the company provide training if I don’t meet all requirements?",
-          "answer": "Yes! Our Learning & Development team offers programs to close skill gaps for employees’ growth.",
-          "keywords": ["training", "learning", "development", "upskill", "no experience", "training program"]
+          "question": "Does the company provide training program if I don’t meet all requirements?",
+          "answer": "Yes! We believe in growth. For their current and future roles, Our Learning and Development team offer training programs to assist employees in acquiring skills gaps.",
+          "keywords": ["training", "program", "learning", "development", "upskill", "gaps", "requirements"]
         }
       ]
     },
@@ -70,158 +70,128 @@
       "questions": [
         {
           "question": "What is the current status of my job application?",
-          "answer": "Check your application status in your candidate profile under 'My Applications' — under review, shortlisted, or completed.",
-          "keywords": ["application status", "check status", "progress", "tracking", "my applications"]
+          "answer": "You can check your application status by logging into your candidate profile on our careers portal. Once logged in, select “My Applications” to view whether your application is under review, shortlisted, or completed.",
+          "keywords": ["status", "application", "current", "check", "portal", "review", "shortlisted"]
         },
         {
           "question": "How long does it take to receive feedback after an interview?",
-          "answer": "Feedback is usually given within 7–10 working days after the interview.",
-          "keywords": ["interview feedback", "response time", "result", "waiting period"]
+          "answer": "Typically, our recruitment team provides feedback within 7 to 10 working days after your interview. However, timelines may vary depending on the position and number of applicants.",
+          "keywords": ["feedback", "interview", "time", "long", "receive", "working days", "applicants"]
         },
         {
           "question": "Will I be notified if I am not selected?",
-          "answer": "Yes, every candidate receives an email notification once the recruitment process concludes.",
-          "keywords": ["not selected", "rejection", "notification", "email update"]
+          "answer": "Yes, we ensure every candidate is informed of the outcome. If you are not selected, you will receive an email notification with feedback or a general update once the recruitment process for that role is completed.",
+          "keywords": ["notified", "not selected", "outcome", "informed", "email", "update", "result"]
         },
         {
           "question": "Can I request detailed feedback on my interview performance?",
-          "answer": "Yes, reply to your interview confirmation email or contact HR via the careers portal.",
-          "keywords": ["feedback", "interview performance", "evaluation", "review", "improvement"]
+          "answer": "Yes, you may request feedback by replying to your interview confirmation email or contacting the HR Recruitment Team through the careers portal. Feedback is provided where possible to help candidates improve for future opportunities.",
+          "keywords": ["request", "detailed", "feedback", "interview", "performance", "improve", "portal", "email"]
         },
         {
-          "question": "My application has been 'Under Review' for a long time. What does that mean?",
-          "answer": "'Under Review' means your application is still being evaluated by HR or hiring managers.",
-          "keywords": ["under review", "pending", "processing", "status explanation"]
+          "question": "My application has been “Under Review” for a long time. What does that mean?",
+          "answer": "“Under Review” means your application is still being evaluated by our recruitment team or the hiring manager. Sometimes, reviews take longer due to a high volume of applications or ongoing internal discussions.",
+          "keywords": ["under review", "long time", "evaluated", "hiring manager", "status", "discussions"]
         },
         {
           "question": "Can I update my resume or details after submitting the application?",
-          "answer": "Yes, log into your profile to update before the deadline. After closing, submit a new application.",
-          "keywords": ["update resume", "edit details", "profile update", "reapply", "application edit"]
+          "answer": "Yes, you can update your details by logging into your profile before the job posting closes. Once the application deadline passes, edits can no longer be made, but you may submit a new updated application for the same or future roles.",
+          "keywords": ["update", "resume", "details", "submit", "profile", "deadline", "application"]
         },
         {
           "question": "If I’m not selected for this role, can I apply again?",
-          "answer": "Absolutely! Apply for other roles or join our talent pool for future openings.",
-          "keywords": ["apply again", "reapply", "future roles", "not selected"]
+          "answer": "Absolutely! We encourage you to apply for other roles that match your skills and experience. You can also join our talent pool to be considered for future openings that suit your profile.",
+          "keywords": ["not selected", "apply again", "reapply", "other roles", "talent pool", "future"]
         }
       ]
     },
     {
-      "category": "Interview-Related Questions",
+      "category": "Interview Questions",
       "questions": [
         {
           "question": "When will I be called for the interview after submitting my application?",
-          "answer": "HR reviews applications within 5–7 days. If shortlisted, you’ll get an invitation via email or SMS.",
-          "keywords": ["interview call", "timeline", "invitation", "shortlist", "notification"]
+          "answer": "Once you submit your application, our HR team reviews it within 5–7 working days. If your profile matches the requirements, you will receive an interview invitation via email or SMS.",
+          "keywords": ["interview", "called", "time", "schedule", "invitation", "email", "sms", "review"]
         },
         {
           "question": "How will the interview be conducted – online or face-to-face?",
-          "answer": "First round online (Google Meet/MS Teams); final round on-site at our Colombo office.",
-          "keywords": ["online interview", "virtual interview", "face to face", "meeting type"]
+          "answer": "We usually conduct the first round online (via Google Meet or MS Teams). The final round is generally held on-site at our Colombo office. The interview type will be clearly mentioned in your invitation.",
+          "keywords": ["interview", "conducted", "online", "face to face", "google meet", "ms teams", "onsite"]
         },
         {
           "question": "What should I bring to the interview?",
-          "answer": "Bring a printed CV, ID, and certificates. For online interviews, ensure good connectivity.",
-          "keywords": ["interview documents", "cv", "id", "certificates", "requirements"]
+          "answer": "Please bring a printed CV, national ID, and any supporting documents such as certificates or portfolios. For online interviews, ensure you have a stable internet connection, camera, and quiet environment.",
+          "keywords": ["bring", "documents", "interview", "cv", "id", "certificates", "portfolio", "internet"]
         },
         {
           "question": "How can I prepare for the interview?",
-          "answer": "Review job description, learn about company culture, and be ready to discuss your skills.",
-          "keywords": ["interview preparation", "tips", "study company", "get ready"]
+          "answer": "Review the job description, learn about NextWave Technologies’ products and culture, and be ready to discuss your skills, experience, and achievements. Nova can share sample interview questions if you’d like!",
+          "keywords": ["prepare", "interview", "job description", "culture", "skills", "experience", "achievements"]
         },
         {
           "question": "Who will conduct my interview and how long will it take?",
-          "answer": "Interviews are led by HR and managers, lasting about 30–45 minutes.",
-          "keywords": ["interviewer", "duration", "interview time", "panel"]
+          "answer": "Interviews are conducted by our HR panel and department managers. The process usually takes 30–45 minutes depending on the role. You will be informed of the exact time and interviewer details in advance.",
+          "keywords": ["conduct", "interview", "panel", "managers", "duration", "time", "long"]
         }
       ]
     },
     {
-      "category": "Internal Mobility & Career Growth",
+      "category": "Internal Mobility",
       "questions": [
         {
-          "question": "What are the qualifying conditions for requesting internal job opportunities?",
-          "answer": "You must have served at least 6 months in your current role with satisfactory performance and supervisor approval.",
-          "keywords": ["internal job", "transfer", "eligibility", "promotion", "internal application"]
+          "question": "What are the qualifying conditions for requesting job opportunities internally at NextGen Systems?",
+          "answer": "If your current role has lasted at least six (6) months, you have a satisfactory performance history, and your immediate supervisor approves, you may apply for internal vacancies. Some positions may require certain skills and/or certification; those requirements will be specified in the advertisement for the vacancy.",
+          "keywords": ["qualifying", "conditions", "internal", "opportunities", "mobility", "months", "performance", "supervisor", "vacancies"]
         },
         {
-          "question": "How do I search and apply for internal job opportunities?",
-          "answer": "Go to Employee Portal → Careers Section, click 'Apply Internally', and upload your latest resume.",
-          "keywords": ["internal vacancies", "employee portal", "career section", "apply internally"]
+          "question": "How do I search and apply for existing internal job opportunities within the areas of software development, and other automation work?",
+          "answer": "The NextGen Employee Portal → Careers Section allows you to view all open internal positions. Just click 'Apply Internally,' upload your most recent resume, and submit the application if you've found a position that interests you. If your profile fits the standards, our recruitment staff will get in touch with you after you receive an email confirmation.",
+          "keywords": ["search", "apply", "internal", "software", "automation", "portal", "careers", "resume", "positions"]
         },
         {
-          "question": "Does the organization have promotion pathways, like from junior to senior roles?",
-          "answer": "Yes, structured promotion paths exist under our Career Development Framework.",
-          "keywords": ["promotion", "career path", "growth", "junior to senior", "development"]
+          "question": "Does the organization have pathways available for internal promotions; for example, from junior developer to senior developer or specialist?",
+          "answer": "Indeed, we do! A systematic path from Junior → Intermediate → Senior → Lead roles is outlined in NextGen Systems' organized Career Development Framework. Depending on your performance, abilities, and development objectives, we can assist migrations into specialized fields like cloud solutions, automation architecture, DevOps, and AI engineering.",
+          "keywords": ["pathways", "internal", "promotions", "junior", "senior", "lead", "developer", "specialist", "framework", "career"]
         },
         {
-          "question": "What training or upskilling programs does the organization offer?",
-          "answer": "We offer workshops, online courses, certifications (AWS, Azure), and project-based learning.",
-          "keywords": ["training", "upskill", "certification", "learning", "career development"]
+          "question": "What formal training or upskilling programs does the organization offer to employees if they want to learn new technologies as part of their organization career; for example, AI, machine learning, data analytics cloud computing?",
+          "answer": "We provide a range of possibilities for upskilling, such as: Internal workshops conducted by our knowledgeable engineers, Online learning modules on AI, Data Science, Cloud, and Cybersecurity, Certification support programs (AWS, Azure, Google Cloud, Scrum, etc.), Project-based learning, which allows you to work on actual projects to obtain practical experience. The Learning & Development Portal allows you to investigate these at any moment.",
+          "keywords": ["training", "upskilling", "programs", "technologies", "ai", "machine learning", "data analytics", "cloud computing", "certification", "workshops", "portal"]
         },
         {
-          "question": "How does the internal mobility process work?",
-          "answer": "Search for openings, apply, attend interviews, and HR arranges transfer after approval.",
-          "keywords": ["mobility process", "department transfer", "internal movement", "apply internally"]
+          "question": "Can you tell me how the internal mobility process works at NextGen Systems. What do I have to do to request a transfer to a new department, or new project?",
+          "answer": "We have an easy-to-understand internal mobility process. This is how it operates: 1. Use the Employee Portal to look for open internal positions. 2. For the job you're interested in, submit an internal application. 3. The hiring manager and HR will assess your application. 4. You will receive an invitation to an interview or conversation if you are selected. 5. HR will arrange the transfer with your new department and present team once it has been approved. You can speak with your supervisor or HRBP directly about your interest in project transfers within the same department.",
+          "keywords": ["internal", "mobility", "process", "transfer", "new department", "new project", "portal", "hr", "request"]
         }
       ]
     },
     {
-      "category": "General and Policy Questions",
+      "category": "General & Policy Questions",
       "questions": [
         {
           "question": "What is the organization’s policy on equal employment opportunities?",
-          "answer": "We follow an equal employment policy ensuring fair treatment regardless of gender, age, religion, or ethnicity.",
-          "keywords": ["equal opportunity", "diversity", "fairness", "non discrimination", "policy"]
+          "answer": "The organization follows a policy of equal employment opportunities. All applicants and employees are treated fairly without regard to gender, age, religion, and ethnicity. Promotions and recruitment are made based on qualifications and skills.",
+          "keywords": ["policy", "equal", "employment", "opportunities", "eeo", "gender", "age", "religion", "ethnicity"]
         },
         {
           "question": "How is employee data and personal information protected?",
-          "answer": "Employee data is confidential and handled per legal data protection standards.",
-          "keywords": ["data protection", "privacy", "confidentiality", "personal info"]
+          "answer": "Employee and applicant data is handled with utmost confidentiality. Their data is accessed only when necessary and is protected in accordance with laws and regulations.",
+          "keywords": ["data", "protected", "employee", "personal", "information", "confidentiality", "security", "laws"]
         },
         {
           "question": "What are the standard working hours and leave policies?",
-          "answer": "Standard hours: 8:30 AM to 5:00 PM, Monday–Friday. Includes annual, casual, and public holidays.",
-          "keywords": ["working hours", "leave policy", "time schedule", "office hours"]
+          "answer": "Employees generally work from 8:30 AM to 5:00 PM, Monday to Friday. Each employee is entitled to annual, casual, and public holidays as per the organization’s leave policy.",
+          "keywords": ["working", "hours", "leave", "policies", "annual", "casual", "public holidays", "monday", "friday"]
         },
         {
           "question": "Does the organization support remote or hybrid work?",
-          "answer": "Yes, depending on the role and project requirements, remote or hybrid work options are available.",
-          "keywords": ["remote work", "hybrid", "work from home", "flexible work", "arrangements"]
+          "answer": "Indeed, depending on job positions and project requirements, flexible work arrangements like remote or hybrid work are available. Workers can discuss these choices with HR officials or their direct supervisors for approval.",
+          "keywords": ["remote", "hybrid", "work", "support", "flexible", "arrangements", "policy", "project", "supervisor"]
         },
         {
           "question": "How can employees report workplace issues or grievances?",
-          "answer": "Employees can contact HR to report harassment, discrimination, or unethical behavior confidentially.",
-          "keywords": ["report issue", "complaint", "grievance", "harassment", "HR contact"]
-        }
-      ]
-    },
-    {
-      "category": "Recruitment Process & Timeline",
-      "questions": [
-        {
-          "question": "How can I apply for job openings in the company?",
-          "answer": "Apply via our official careers page — create an account, upload your resume, and complete the application.",
-          "keywords": ["apply", "careers page", "submit", "job opening", "application form"]
-        },
-        {
-          "question": "How long does the recruitment process usually take?",
-          "answer": "It takes about 2–4 weeks, depending on the position. You’ll be notified at each stage.",
-          "keywords": ["recruitment time", "process duration", "timeline", "selection"]
-        },
-        {
-          "question": "What are the main stages of the recruitment process?",
-          "answer": "Stages include application review, AI screening, HR interview, technical interview, and final selection.",
-          "keywords": ["stages", "process steps", "interview", "selection", "screening"]
-        },
-        {
-          "question": "Will I receive updates on my application status?",
-          "answer": "Yes! Our system updates your profile and notifies you via email or SMS at each stage.",
-          "keywords": ["status update", "notifications", "progress", "email alert"]
-        },
-        {
-          "question": "Can I reapply if I am not selected this time?",
-          "answer": "Yes, you can reapply after six months, especially if you’ve gained new experience or skills.",
-          "keywords": ["reapply", "apply again", "not selected", "future application"]
+          "answer": "The organization maintains policies to minimize employee harassment, discrimination, and unethical behaviour. If such a problem occurs, solutions can be obtained through the Human Resources department. These problems are resolved amicably.",
+          "keywords": ["report", "workplace", "issues", "grievances", "harassment", "discrimination", "unethical", "hr"]
         }
       ]
     }
